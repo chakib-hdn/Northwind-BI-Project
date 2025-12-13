@@ -1,0 +1,743 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{tcolorbox}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows, positioning, calc}
+
+\geometry{margin=2.5cm}
+
+\title{Guide Complet : Power BI Desktop}
+% =========================
+% PAGE DE GARDE
+% =========================
+\begin{titlepage}
+    \centering
+    
+    % Université / Faculté
+    {\Large \textbf{Université des Sciences et de la Technologie Houari Boumediene (USTHB)}\par}
+    \vspace{0.5cm}
+    {\large Faculté d’Informatique\par}
+    \vspace{0.5cm}
+    {\large Master 2 Big Data\par}
+    
+    \vspace{2cm}
+    
+    % Titre principal
+    {\Huge \bfseries Conception d'un entrepot de données \par}
+    {\Huge \bfseries dans power bi \par}
+
+    
+    \vspace{2cm}
+    
+    % Module
+    {\Large \textbf{Module : Business Intelligence (BI)}\par}
+    
+    \vspace{1.5cm}
+    
+    % Étudiant
+    \begin{flushleft}
+        \textbf{Réalisé par :} \\
+        \large IHADDADENE Chakib 181831091825
+    \end{flushleft}
+    
+    \vspace{1cm}   
+    
+    \vfill
+    
+    % Année universitaire
+    {\large Année universitaire : 2024 -- 2025\par}
+    
+\end{titlepage}
+
+\newpage
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\newpage
+
+\begin{tcolorbox}[colback=blue!5!white, colframe=blue!75!black, title=�� Téléchargement Rapide]
+\url{https://aka.ms/pbidesktopstore}
+\end{tcolorbox}
+
+\section{Installation de Power BI Desktop}
+
+\subsection{Prérequis Système}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Composant} & \textbf{Configuration minimale} \\
+\hline
+Système d'exploitation & Windows 10 ou 11 (64-bit) \\
+Processeur & 1 GHz ou plus rapide \\
+Mémoire RAM & 4 GB (8 GB recommandé) \\
+Espace disque & 2 GB d'espace libre \\
+Résolution écran & 1440x900 ou supérieure \\
+\hline
+\end{tabular}
+\caption{Configuration système requise}
+\end{table}
+
+\subsection{Étapes d'Installation}
+
+\subsubsection{Méthode 2 : Téléchargement Direct}
+\begin{enumerate}[label=\arabic*.]
+    \item Rendez-vous sur : \url{https://aka.ms/pbidesktopstore}
+    \item Cliquez sur \textbf{"Télécharger gratuitement"}
+    \item Exécutez le fichier \texttt{PBIDesktopSetup.exe}
+    \item Suivez l'assistant d'installation
+    \item Acceptez les conditions d'utilisation
+\end{enumerate}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{desktop-install-01.png}
+    \caption{Interface d'installation de power bi desktop}
+    \label{fig:pbi-install}
+\end{figure}
+
+\section{Premier Lancement et Configuration}
+
+\subsection{Configuration Initiale}
+
+\begin{enumerate}[label=\arabic*.]
+    \item \textbf{Écran d'accueil} : Sélectionnez "Commencer"
+    \item \textbf{Connexion} : Connectez-vous avec votre compte Microsoft
+    \item \textbf{Thème} : Choisissez "Clair" ou "Sombre"
+    \item \textbf{Paramètres régionaux} : Sélectionnez "Français (France)"
+\end{enumerate}
+
+\subsection{Interface Utilisateur}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Zone} & \textbf{Fonctionnalité} \\
+\hline
+1. Ruban & Commandes principales (Fichier, Accueil, etc.) \\
+2. Volet Visualisations & Types de graphiques disponibles \\
+3. Volet Champs & Tables et colonnes de données \\
+4. Zone de dessin & Construction des rapports \\
+5. Volet Filtres & Application des filtres \\
+6. Barre d'état & Informations et progression \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{Capture d'écran 2025-12-10 194128.PNG}
+    \caption{Anatomie de l'interface Power BI Desktop}
+    \label{fig:pbi-interface}
+\end{figure}
+
+\section{Architecture de l'Entrepôt de Données Northwind}
+
+\subsection{Modèle en Étoile (Star Schema)}
+
+% === DIAGRAMME TIKZ AJOUTÉ ICI ===
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[node distance=0.8cm]
+    
+    % Définir les styles
+    \tikzset{
+        box/.style={
+            draw,
+            rectangle,
+            align=center,
+            minimum height=1.2cm,
+            line width=0.8pt
+        },
+        titlebox/.style={
+            draw,
+            rectangle,
+            align=center,
+            fill=gray!10,
+            font=\bfseries,
+            minimum height=0.8cm,
+            line width=0.8pt
+        },
+        arrow/.style={
+            ->,
+            >=stealth,
+            line width=1pt
+        }
+    }
+    
+    % Couleurs
+    \definecolor{sourcecolor}{RGB}{173, 216, 230}      % bleu clair
+    \definecolor{etlcolor}{RGB}{255, 228, 181}        % orange clair
+    \definecolor{factcolor}{RGB}{255, 182, 193}       % rose clair
+    \definecolor{dimcolor}{RGB}{144, 238, 144}        % vert clair
+    \definecolor{reportcolor}{RGB}{221, 160, 221}     % violet clair
+    
+    % ==================== SOURCES DE DONNÉES ====================
+    \node[titlebox, minimum width=6cm] (title1) at (0,8) {SOURCES DE DONNÉES};
+    \node[box, fill=sourcecolor, minimum width=6cm, below=0.2 of title1] (sources) {
+        \begin{minipage}{5cm}
+        \centering
+        \vspace{0.1cm}
+        SQL Server (SSMS)\\
+        Fichiers Excel (ACCESS)
+        \vspace{0.1cm}
+        \end{minipage}
+    };
+    
+    % ==================== COUCHE ETL ====================
+    \node[titlebox, minimum width=6cm, below=1.2 of sources] (title2) {COUCHE ETL};
+    \node[box, fill=etlcolor, minimum width=6cm, below=0.2 of title2] (etl) {
+        \begin{minipage}{5cm}
+        \centering
+        \vspace{0.1cm}
+        POWER QUERY\\
+        (Transformation \& Nettoyage)
+        \vspace{0.1cm}
+        \end{minipage}
+    };
+    
+    % ==================== MODÈLE EN ÉTOILE ====================
+    \node[titlebox, minimum width=6cm, below=1.2 of etl] (title3) {MODÈLE EN ÉTOILE};
+    
+    % Table de faits
+    \node[box, fill=factcolor, minimum width=4cm, minimum height=1.5cm, below=0.8 of title3] (fact) {
+        \textbf{TF\_Commande}\\
+        \footnotesize{(Table de faits)}
+    };
+    
+    % Dimensions
+    \node[box, fill=dimcolor, minimum width=3cm, left=3.5cm of fact] (dim_temps) {Dim\_Temps};
+    \node[box, fill=dimcolor, minimum width=3cm, above=0.6 of dim_temps] (dim_client) {Dim\_Client};
+    \node[box, fill=dimcolor, minimum width=3cm, below=0.6 of dim_temps] (dim_employee) {Dim\_Employee};
+    
+    % ==================== COUCHE RAPPORT ====================
+    \node[titlebox, minimum width=6cm, below=3 of fact] (title4) {COUCHE RAPPORT};
+    \node[box, fill=reportcolor, minimum width=6cm, minimum height=1.5cm, below=0.2 of title4] (report) {
+        \textbf{POWER BI DASHBOARD}\\
+        KPI + Graphiques + Tableaux
+    };
+    
+    % ==================== FLÈCHES ====================
+    % Sources → ETL
+    \draw[arrow, color=gray!70] (sources.south) -- (title2.north);
+    
+    % ETL → Modèle
+    \draw[arrow, color=gray!70] (etl.south) -- (title3.north);
+    
+    % Dimensions → Table de faits
+    \draw[arrow, color=gray!70] (dim_temps.east) -- (fact.west);
+    \draw[arrow, color=gray!70] (dim_client.east) -- ($(fact.west) + (0,0.3)$);
+    \draw[arrow, color=gray!70] (dim_employee.east) -- ($(fact.west) + (0,-0.3)$);
+    
+    % Table de faits → Rapport
+    \draw[arrow, color=gray!70] (fact.south) -- (title4.north);
+    
+    % Titre → Contenu (lignes verticales internes)
+    \draw[gray!50, line width=0.5pt] (title1.south) -- (sources.north);
+    \draw[gray!50, line width=0.5pt] (title2.south) -- (etl.north);
+    \draw[gray!50, line width=0.5pt] (title3.south) -- (fact.north);
+    \draw[gray!50, line width=0.5pt] (title4.south) -- (report.north);
+    
+    % Cadre autour du modèle en étoile
+    \draw[gray!60, line width=0.8pt, rounded corners=5pt] 
+        ($(title3.north west) + (-0.5,0.3)$) rectangle 
+        ($(dim_employee.south east) + (0.5,-0.3)$);
+    
+    \end{tikzpicture}
+    \caption{Architecture complète de l'entrepôt de données Northwind avec modèle en étoile à 3 dimensions}
+    \label{fig:architecture-northwind}
+\end{figure}
+% === FIN DU DIAGRAMME TIKZ ===
+
+\subsection{Composants de l'Architecture}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|p{0.3\textwidth}|p{0.6\textwidth}|}
+\hline
+\textbf{Composant} & \textbf{Description} \\
+\hline
+Sources de Données & SQL Server (Northwind) + Fichiers Excel \\
+Couche ETL & Power Query pour l'extraction et transformation \\
+Tables Dimensions & Dim\_Employee, Dim\_Client, Dim\_Temps \\
+Table de Faits & TF\_Commande  \\
+Couche Présentation & Rapports Power BI + Dashboard \\
+\hline
+\end{tabular}
+\caption{Composants de l'architecture de l'entrepôt}
+\end{table}
+
+\subsection{Flux de Données}
+
+\begin{enumerate}[label=\arabic*.]
+    \item \textbf{Extraction} : Données brutes depuis SSMS et Excel
+    \item \textbf{Transformation} : Nettoyage et standardisation via Power Query
+    \item \textbf{Chargement} : Création des dimensions et table de faits
+    \item \textbf{Modélisation} : Établissement des relations 1:*
+    \item \textbf{Visualisation} : Création des rapports et dashboards
+\end{enumerate}
+
+\section{Création du Projet Northwind}
+
+\subsection{Structure du Projet}
+
+\begin{enumerate}[label=\arabic*.]
+    \item \textbf{Créer un dossier projet} : 
+    \begin{lstlisting}[language=bash]
+C:\Users\IHADDADENE Chakib\Documents\Power BI Projects\Northwind_DW
+    └── data\          # Données sources
+    └── scripts\       # Codes Power Query
+    └── exports\       # Exports et rapports
+    \end{lstlisting}
+    
+    \item \textbf{Lancer Power BI Desktop}
+    \item \textbf{Nouveau fichier} : Fichier → Nouveau
+    \item \textbf{Enregistrer} : Fichier → Enregistrer sous → "Northwind\_DW.pbix"
+\end{enumerate}
+
+\subsection{Importation des Données Sources}
+
+\subsubsection{Connexion à SQL Server}
+\begin{enumerate}[label=\arabic*.]
+    \item Cliquez sur \textbf{"Obtenir des données"} → \textbf{Base de données} → \textbf{SQL Server}
+    \item Entrez les informations de connexion :
+    \begin{itemize}
+        \item Serveur : \texttt{DESKTOP-VEO1CEQ\textbackslash SQLCHAKIB}
+        \item Base de données : \texttt{Northwind}
+        \item Mode de connexion : \textbf{Importer} (recommandé)
+    \end{itemize}
+    \item Sélectionnez les tables nécessaires :
+    \begin{itemize}
+        \item Customers
+        \item Employees
+        \item EmployeeTerritories
+        \item Orders
+        \item Territories
+    \end{itemize}
+\end{enumerate}
+
+\subsubsection{Importation des Fichiers Excel}
+\begin{enumerate}[label=\arabic*.]
+    \item Cliquez sur \textbf{"Obtenir des données"} → \textbf{Fichier} → \textbf{Excel}
+    \item Naviguez vers : \texttt{C:\textbackslash Users\textbackslash PC\textbackslash Documents\textbackslash M2 BIGDATA\textbackslash tp bi\textbackslash csv du dm}
+    \item Sélectionnez les fichiers :
+    \begin{itemize}
+        \item Customers.xlsx
+        \item Employees2.xlsx
+        \item Orders.xlsx
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Transformation avec Power Query}
+
+\subsubsection{Accès à l'Éditeur Power Query}
+\begin{itemize}
+    \item Méthode 1 : \textbf{Accueil} → \textbf{Transformer les données}
+    \item Méthode 2 : Clic droit sur une requête → \textbf{Éditer la requête}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{Capture d'écran 2025-12-10 094846.png}
+    \caption{Éditeur Power Query avec requêtes Northwind
+}
+    \label{fig:placeholder}
+\end{figure}
+\subsubsection{Renommage des Requêtes}
+\begin{enumerate}[label=\arabic*.]
+    \item Dans le volet de navigation Power Query :
+    \item Renommez chaque requête avec le suffixe \texttt{\_ssms} ou \texttt{\_excel} :
+    \begin{itemize}
+        \item Customers → Customers\_ssms
+        \item Employees → Employee\_ssms
+        \item etc.
+    \end{itemize}
+\end{enumerate}
+
+\section{Implémentation du Modèle de Données}
+
+\subsection{Création des Dimensions}
+
+\subsubsection{Dim\_Employee}
+\begin{enumerate}[label=\arabic*.]
+    \item \textbf{Nouvelle requête} : Accueil → Nouvelle source → Requête vide
+    \item \textbf{Coller le code} : Collez le code M de Dim\_Employee
+    \item \textbf{Renommer} : Renommez la requête en \texttt{Dim\_Employee}
+    \item \textbf{Fermer et appliquer}
+\end{enumerate}
+
+\subsubsection{Dim\_Client et Dim\_Temps}
+\begin{itemize}
+    \item Répétez le processus pour chaque dimension
+    \item Vérifiez les types de données
+    \item Activez le chargement pour les tables dimensionnelles
+\end{itemize}
+
+\subsection{Création de la Table de Faits}
+
+\subsubsection{TF\_Commande}
+\begin{enumerate}[label=\arabic*.]
+    \item Créez une nouvelle requête vide
+    \item Collez le code complet de TF\_Commande
+    \item Renommez en \texttt{TF\_Commande}
+    \item Vérifiez le nombre de lignes (devrait être 878)
+\end{enumerate}
+
+\subsection{Établissement des Relations}
+
+\begin{enumerate}[label=\arabic*.]
+    \item Retournez dans la vue \textbf{Modèle} de Power BI
+    \item Établissez les relations suivantes :
+    \begin{itemize}
+        \item \texttt{TF\_Commande[id\_temps] → Dim\_Temps[id\_temps]}
+        \item \texttt{TF\_Commande[id\_seqEmployee] → Dim\_Employee[id\_seqEmployee]}
+        \item \texttt{TF\_Commande[id\_seqClient] → Dim\_Client[id\_seqClient]}
+    \end{itemize}
+    \item Vérifiez que toutes les relations sont \textbf{1 à plusieurs (*)}
+\end{enumerate}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{Capture d'écran 2025-12-08 221202.png}
+    \caption{Modèle de données final avec relations}
+    \label{fig:placeholder}
+\end{figure}
+
+\section{Comparaison Power BI vs Talend pour l'ETL}
+
+\subsection{Tableau Comparatif}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|p{0.25\textwidth}|p{0.35\textwidth}|p{0.35\textwidth}|}
+\hline
+\textbf{Aspect} & \textbf{Power BI (Power Query)} & \textbf{Talend} \\
+\hline
+\textbf{Type d'outil} & Outil de BI avec ETL intégré & Plateforme ETL/ELT dédiée \\
+\hline
+\textbf{Complexité} & Courbe d'apprentissage douce & Courbe d'apprentissage plus raide \\
+\hline
+\textbf{Langage} & M (Power Query) & Java + Composants visuels \\
+\hline
+\textbf{Connexions} & Connecteurs natifs limités & 1000+ connecteurs \\
+\hline
+\textbf{Transformation} & Interface utilisateur + M & Interface graphique + code \\
+\hline
+\textbf{Orchestration} & Basic (rafraîchissements) & Avancée (workflows complexes) \\
+\hline
+\textbf{Coût} & Gratuit (Desktop) & Licence payante (Enterprise) \\
+\hline
+\textbf{Performance} & Optimisé pour données de taille moyenne & Scalable pour gros volumes \\
+\hline
+\textbf{Maintenance} & Facile (tout intégré) & Complexe (infrastructure séparée) \\
+\hline
+\textbf{Utilisation projet Northwind} & Parfait pour POC et démonstrations & Surdimensionné pour ce besoin \\
+\hline
+\end{tabular}
+\caption{Comparaison Power BI vs Talend pour l'ETL}
+\end{table}
+
+\subsection{Points Forts par Outil}
+
+\subsubsection{Power BI (Power Query)}
+\begin{itemize}
+    \item ✅ Intégration native avec les rapports
+    \item ✅ Interface utilisateur intuitive
+    \item ✅ Pas de contexte switching entre ETL et reporting
+    \item ✅ Version Desktop gratuite
+    \item ✅ Fonctionnalités de modélisation intégrées
+    \item ✅ Support DAX pour calculs avancés
+\end{itemize}
+
+\subsubsection{Talend}
+\begin{itemize}
+    \item ✅ Orchestration de workflows complexes
+    \item ✅ Support de gros volumes de données
+    \item ✅ Connecteurs très variés
+    \item ✅ Qualité et gouvernance des données
+    \item ✅ Métadonnées et documentation
+    \item ✅ Intégration avec l'écosystème Big Data
+\end{itemize}
+
+\subsection{Exemple de Code Comparé}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|p{0.45\textwidth}|p{0.45\textwidth}|}
+\hline
+\textbf{Power Query (M)} & \textbf{Talend (Java)} \\
+\hline
+\begin{lstlisting}[language=PowerQuery, basicstyle=\tiny]
+let
+    Source = Orders_ssms,
+    #"Filtered Rows" = 
+        Table.SelectRows(
+            Source, 
+            each [ShippedDate] <> null
+        )
+in
+    #"Filtered Rows"
+\end{lstlisting} &
+\begin{lstlisting}[language=Java, basicstyle=\tiny]
+// Composant tFilterRow
+row1.ShippedDate != null
+
+// Ou en Java dans tJavaRow
+if(input_row.ShippedDate != null) {
+    output_row = input_row;
+}
+\end{lstlisting} \\
+\hline
+\end{tabular}
+\caption{Comparaison de syntaxe pour un filtre simple}
+\end{table}
+
+\subsection{Recommandation pour le Projet Northwind}
+
+\begin{tcolorbox}[colback=yellow!5!white, colframe=yellow!75!black, title=�� Choix Optimal pour Northwind]
+\textbf{Power BI avec Power Query est le meilleur choix} pour ce projet car :
+\begin{itemize}
+    \item Volume de données modeste (878 lignes)
+    \item Besoin d'intégration directe avec les rapports
+    \item Temps de développement réduit
+    \item Aucune infrastructure supplémentaire nécessaire
+    \item Coût nul avec Power BI Desktop gratuit
+    \item Facilité de maintenance et de partage
+\end{itemize}
+\end{tcolorbox}
+
+\section{Visualisation avec Python dans Power BI}
+
+\subsection{Configuration de Python pour Power BI}
+
+\subsubsection{Installation des Prérequis}
+\begin{enumerate}[label=\arabic*.]
+    \item \textbf{Installer Python} : Téléchargez Python 3.8+ depuis \url{https://python.org}
+    \item \textbf{Installer les packages} :
+    \begin{lstlisting}[language=bash]
+pip install pandas matplotlib
+    \end{lstlisting}
+    \item \textbf{Configurer Power BI} :
+    \begin{itemize}
+        \item Fichier → Options et paramètres → Options
+        \item Scripting Python → Spécifier le chemin d'installation Python
+        \item Exemple : \texttt{C:\textbackslash Users\textbackslash IHADDADENE Chakib\textbackslash AppData\textbackslash Local\textbackslash Programs\textbackslash Python\textbackslash Python39}
+    \end{itemize}
+\end{enumerate}
+
+
+\subsubsection{Création d'un Visuel Python}
+\begin{enumerate}[label=\arabic*.]
+    \item \textbf{Sélectionner le visuel Python} :
+    \begin{itemize}
+        \item Dans le volet Visualisations, cliquez sur l'icône \textbf{Python}
+        \item Une zone de script vide apparaît sur la page
+    \end{itemize}
+    
+    \item \textbf{Glisser les champs nécessaires} :
+    \begin{itemize}
+        \item Depuis le volet Champs, glissez-déposez les colonnes dans le visuel Python
+        \item Exemple pour notre projet Northwind :
+        \begin{itemize}
+            
+            \item Depuis \texttt{TF\_Commande} : \texttt{nbr\_commande\_livrees}
+            \item Depuis \texttt{Dim\_Employee} : \texttt{TerritoryDescri}
+        \end{itemize}
+    \end{itemize}
+    
+    \item \textbf{Écrire le script Python} :
+    \begin{itemize}
+        \item Le champ de script s'active automatiquement
+        \item Power BI crée automatiquement un DataFrame \texttt{dataset} contenant vos données
+    \end{itemize}
+\end{enumerate}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{script_python.png}
+    \caption{Interface du visuel Python dans Power BI
+}
+    \label{fig:placeholder}
+\end{figure}
+\subsubsection{Exemple Complet : Analyse des Commandes livrées par territoire }
+\subsection{Exemple 2 : Top 5 des Territoires par Performance}
+
+\subsubsection{Préparation des Données}
+\begin{enumerate}[label=\arabic*.]
+    \item \textbf{Sélectionner le visuel Python} dans le volet Visualisations
+    \item \textbf{Glisser les champs nécessaires} :
+    \begin{itemize}
+        \item Depuis \texttt{Dim\_Employee} : \texttt{TerritoryDescri}
+        \item Depuis \texttt{TF\_Commande} : \texttt{nbr\_commande\_livrees}
+    \end{itemize}
+    \item \textbf{Power BI crée automatiquement} le DataFrame \texttt{dataset}
+\end{enumerate}
+
+\subsubsection{Script Python pour l'Analyse Territoriale}
+\begin{lstlisting}
+import pandas as pd
+import matplotlib.pyplot as plt
+
+df = dataset.groupby('TerritoryDescri')['nbr_commande_livrees'] \
+            .sum() \
+            .nlargest(5)
+
+plt.figure(figsize=(8,6))
+df.sort_values().plot(kind='barh', color='purple')
+plt.title("Top 5 Territoires par commandes livrees")
+plt.xlabel("Nombre de commandes")
+plt.tight_layout()
+plt.show()
+\end{lstlisting}
+
+\subsubsection{Résultat Attendue}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{graphe.png}
+    \caption{Visualisation du top 5 des territoires générée par Python}
+    \label{fig:placeholder}
+\end{figure}
+
+\subsubsection{Explications du Code}
+\begin{table}[H]
+\centering
+\begin{tabular}{|p{0.25\textwidth}|p{0.7\textwidth}|}
+\hline
+\textbf{Ligne de code} & \textbf{Explication} \\
+\hline
+\texttt{dataset.groupby()} & Regroupe les données par territoire \\
+\texttt{nlargest(5)} & Sélectionne les 5 territoires avec le plus de commandes \\
+\texttt{kind='barh'} & Crée un diagramme en barres horizontal \\
+\texttt{color='purple'} & Définit la couleur des barres \\
+\texttt{plt.title()} & Ajoute un titre au graphique \\
+\texttt{plt.text()} & Ajoute les valeurs numériques sur les barres \\
+\texttt{plt.grid()} & Ajoute une grille pour meilleure lisibilité \\
+\texttt{plt.tight\_layout()} & Optimise l'espacement des éléments \\
+\texttt{plt.show()} & Affiche le graphique dans Power BI \\
+\hline
+\end{tabular}
+\caption{Explications détaillées du code Python}
+\end{table}
+\subsubsection{Exécution et Résultats}
+\begin{enumerate}[label=\arabic*.]
+    \item \textbf{Cliquez sur "Exécuter le script"} (icône play)
+    \item \textbf{Attendez le chargement} (première exécution peut prendre quelques secondes)
+    \item \textbf{Visualisez le résultat} : Le graphique apparaît dans le visuel
+    \item \textbf{Interagissez} : Utilisez les filtres Power BI pour mettre à jour dynamiquement le graphique Python
+\end{enumerate}
+
+\subsection{Bonnes Pratiques pour les Visuals Python}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|p{0.4\textwidth}|p{0.55\textwidth}|}
+\hline
+\textbf{Pratique} & \textbf{Explication} \\
+\hline
+Glisser d'abord les champs & Power BI crée \texttt{dataset} avec seulement ces colonnes \\
+Vérifier les colonnes & Utilisez \texttt{print(dataset.columns)} pour debugger \\
+Gérer les NaN & Utilisez \texttt{dropna()} ou \texttt{fillna()} \\
+Optimiser les performances & Limitez le nombre de lignes avec des filtres \\
+Utiliser des styles & \texttt{plt.style.use('seaborn')} pour de beaux graphiques \\
+Sauvegarder les scripts & Copiez vos scripts dans un fichier .py externe \\
+\hline
+\end{tabular}
+\caption{Bonnes pratiques pour les visuals Python}
+\end{table}
+
+\subsection{Avantages du Visuel Python}
+
+\begin{itemize}
+    \item \textbf{✅ Intégration native} : Pas besoin d'exporter/importer
+    \item \textbf{✅ Interactivité} : Réagit aux filtres Power BI
+    \item \textbf{✅ Flexibilité} : Toute bibliothèque Python compatible
+    \item \textbf{✅ Mise à jour automatique} : Rafraîchit avec les données
+\end{itemize}
+
+\begin{tcolorbox}[colback=yellow!5!white, colframe=yellow!75!black, title=⚠️ Limitations à connaître]
+\begin{itemize}
+    \item Performance : Les scripts longs peuvent ralentir Power BI
+    \item Mémoire : Limité par les ressources de Power BI
+    \item Dépendances : Doivent être installées sur chaque machine
+    \item Version Python : Doit correspondre à celle configurée
+\end{itemize}
+\end{tcolorbox}
+\newpage
+\subsection{Dashboard Final Northwind}
+
+
+Notre dashboard final intègre 6 visuals Python , les voici :
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{Capture d'écran 2025-12-13 111445.png}
+    \caption{Dashboard Northwind avec 6 visuals Python}
+    \label{fig:placeholder}
+\end{figure}
+
+
+\section{Résolution des Problèmes Courants}
+
+\subsection{Problèmes d'Installation}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|p{0.3\textwidth}|p{0.6\textwidth}|}
+\hline
+\textbf{Problème} & \textbf{Solution} \\
+\hline
+Échec d'installation Microsoft Store & Téléchargez la version hors Store \\
+Erreur "Accès refusé" & Exécutez en tant qu'administrateur \\
+Manque de dépendances & Installez .NET Framework 4.8 \\
+Antivirus bloque l'installation & Désactivez temporairement l'antivirus \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Problèmes de Connexion}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|p{0.3\textwidth}|p{0.6\textwidth}|}
+\hline
+\textbf{Problème} & \textbf{Solution} \\
+\hline
+SQL Server inaccessible & Vérifiez le nom du serveur et les permissions \\
+Fichier Excel non trouvé & Vérifiez le chemin et les permissions \\
+Erreur d'authentification & Utilisez l'authentification Windows \\
+Limite de mémoire & Augmentez la mémoire allouée à Power BI \\
+\hline
+\end{tabular}
+\end{table}
+
+\newpage
+\section{Conclusion}
+
+Ce guide vous a accompagné de l'installation de Power BI Desktop à la création d'un projet d'entrepôt de données complet avec Northwind, incluant une analyse comparative avec Talend. Vous disposez maintenant de toutes les ressources nécessaires pour :
+
+\begin{itemize}
+    \item ✅ Installer et configurer Power BI Desktop
+    \item ✅ Comprendre l'architecture d'un entrepôt de données
+    \item ✅ Comparer Power BI et Talend pour l'ETL
+    \item ✅ Créer un projet structuré Northwind
+    \item ✅ Importer et transformer des données multi-sources
+    \item ✅ Construire un modèle de données optimisé
+    \item ✅ Publier et partager vos analyses
+\end{itemize}
+
+\end{document}
