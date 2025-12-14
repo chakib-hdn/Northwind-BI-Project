@@ -26,7 +26,7 @@
     % Université / Faculté
     {\Large \textbf{Université des Sciences et de la Technologie Houari Boumediene (USTHB)}\par}
     \vspace{0.5cm}
-    {\large Faculté d’Informatique\par}
+    {\large Faculté d'Informatique\par}
     \vspace{0.5cm}
     {\large Master 2 Big Data\par}
     
@@ -69,7 +69,7 @@
 
 \newpage
 
-\begin{tcolorbox}[colback=blue!5!white, colframe=blue!75!black, title=�� Téléchargement Rapide]
+\begin{tcolorbox}[colback=blue!5!white, colframe=blue!75!black, title=⚠️ Téléchargement Rapide]
 \url{https://aka.ms/pbidesktopstore}
 \end{tcolorbox}
 
@@ -509,7 +509,7 @@ if(input_row.ShippedDate != null) {
 
 \subsection{Recommandation pour le Projet Northwind}
 
-\begin{tcolorbox}[colback=yellow!5!white, colframe=yellow!75!black, title=�� Choix Optimal pour Northwind]
+\begin{tcolorbox}[colback=yellow!5!white, colframe=yellow!75!black, title=⚠️ Choix Optimal pour Northwind]
 \textbf{Power BI avec Power Query est le meilleur choix} pour ce projet car :
 \begin{itemize}
     \item Volume de données modeste (878 lignes)
@@ -677,9 +677,256 @@ Sauvegarder les scripts & Copiez vos scripts dans un fichier .py externe \\
     \item Version Python : Doit correspondre à celle configurée
 \end{itemize}
 \end{tcolorbox}
+
+\section{Alternative : Python Pur sans Power BI}
+
+\subsection{Approche Directe avec Jupyter Notebooks}
+
+\begin{tcolorbox}[colback=green!5!white, colframe=green!75!black, title=�� Alternative Complémentaire]
+Après avoir exploré l'intégration Python-Power BI, il est important de noter qu'on peut également travailler avec Python de manière autonome, sans passer par Power BI, en utilisant directement les tables exportées.
+\end{tcolorbox}
+
+\subsubsection{Principe de l'Approche}
+\begin{itemize}
+    \item \textbf{Export des tables} : Les tables dimensionnelles et de faits créées dans Power BI peuvent être exportées au format CSV
+    \item \textbf{Chargement direct en Python} : Utilisation de pandas pour charger les fichiers CSV
+    \item \textbf{Visualisation autonome} : Création de dashboards complets avec matplotlib/seaborn
+    \item \textbf{Avantage majeur} : Indépendance totale de Power BI
+\end{itemize}
+
+
+\subsubsection{Exemple de Code Python Autonome}
+
+\begin{lstlisting}[language=python]
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+�� DASHBOARD NORTHWIND - ANALYSE COMPLÈTE
+�� 6 Visualisations Python avec les vraies données
+"""
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+
+# 1. CHARGEMENT DES DONNÉES
+print("�� Chargement des tables Northwind...")
+
+# Chargement direct depuis les CSV exportés
+dim_client = pd.read_csv('data/Dim_Client.csv')
+dim_employee = pd.read_csv('data/Dim_Employee.csv')
+dim_temps = pd.read_csv('data/Dim_Temps.csv')
+tf_commande = pd.read_csv('data/TF_Commande.csv')
+
+# 2. FUSION DES TABLES (similaire au modèle Power BI)
+print("�� Fusion des tables...")
+df = pd.merge(tf_commande, dim_temps, on='id_temps', how='left')
+df = pd.merge(df, dim_employee, on='id_seqEmployee', how='left')
+df = pd.merge(df, dim_client, on='id_seqClient', how='left')
+
+# 3. CRÉATION DES 6 VISUALISATIONS
+print("�� Génération des 6 visualisations...")
+
+# Graphique 1: Volume des commandes par mois
+commandes_par_mois = df.groupby('mois_annee').agg({
+    'nbr_commande_livrees': 'sum',
+    'nbr_commande_non_livrees': 'sum'
+}).reset_index()
+
+plt.figure(figsize=(14, 7))
+# ... code pour le premier graphique ...
+
+# Graphique 2: Top 10 clients
+top_clients = df.groupby('CompanyName')['nbr_commande_livrees'] \
+                .sum().nlargest(10)
+
+plt.figure(figsize=(10, 6))
+top_clients.sort_values().plot(kind='barh', color='skyblue')
+plt.title("Top 10 Clients - Python Pur")
+plt.xlabel("Commandes livrées")
+plt.tight_layout()
+plt.show()
+
+# ... suite des 4 autres visualisations ...
+\end{lstlisting}
+
+\subsubsection{Avantages de l'Approche Python Pure}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|p{0.4\textwidth}|p{0.55\textwidth}|}
+\hline
+\textbf{Avantage} & \textbf{Description} \\
+\hline
+\textbf{Indépendance} & Pas besoin de licence Power BI \\
+\textbf{Portabilité} & Fonctionne sur tout OS (Windows, Linux, Mac) \\
+\textbf{Reproductibilité} & Scripts versionnables avec Git \\
+\textbf{Automatisation} & Intégration facile dans des pipelines CI/CD \\
+\textbf{Personnalisation} & Contrôle total sur les graphiques \\
+\textbf{Libraries avancées} & Accès à seaborn, plotly, bokeh, etc. \\
+\textbf{Export multiple} & PDF, HTML, PNG, SVG, etc. \\
+\textbf{Cloud ready} & Déploiement sur serveur Python \\
+\hline
+\end{tabular}
+\caption{Avantages de l'approche Python pure}
+\end{table}
+
+\subsubsection{Comparaison des Deux Approches}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|p{0.3\textwidth}|p{0.32\textwidth}|p{0.32\textwidth}|}
+\hline
+\textbf{Critère} & \textbf{Python dans Power BI} & \textbf{Python Pur (Notebook)} \\
+\hline
+\textbf{Interactivité} & ✅ Excellente (filtres Power BI) & ⚠️ Limitée (sauf avec widgets) \\
+\textbf{Intégration} & ✅ Native avec rapports Power BI & ⚠️ Séparé du dashboard \\
+\textbf{Apprentissage} & ⚠️ Nécessite Power BI & ✅ Seulement Python \\
+\textbf{Portabilité} & ⚠️ Windows seulement & ✅ Multi-plateforme \\
+\textbf{Licence} & ⚠️ Gratuit mais limité & ✅ 100\% gratuit \\
+\textbf{Versionnement} & ⚠️ Complexe (.pbix) & ✅ Facile (.py avec Git) \\
+\textbf{Automatisation} & ⚠️ Limitée & ✅ Excellente (scripts) \\
+\textbf{Cloud} & ✅ Power BI Service & ✅ Tout serveur Python \\
+\hline
+\end{tabular}
+\caption{Comparaison des deux approches Python}
+\end{table}
+
+\subsubsection{Scénarios d'Utilisation Recommandés}
+
+\begin{tcolorbox}[colback=blue!5!white, colframe=blue!75!black, title=�� Quand utiliser quelle approche ?]
+\begin{itemize}
+    \item \textbf{Python dans Power BI} : 
+    \begin{itemize}
+        \item Dashboards interactifs pour les utilisateurs métier
+        \item Intégration avec d'autres visuels Power BI
+        \item Partage via Power BI Service
+        \item Environnements où Power BI est déjà adopté
+    \end{itemize}
+    
+    \item \textbf{Python pur (Notebooks)} :
+    \begin{itemize}
+        \item Analyses reproductibles pour data scientists
+        \item Versionnement avec Git
+        \item Déploiement sur serveurs Linux
+        \item Intégration dans pipelines de données
+        \item Besoin de bibliothèques spécifiques (scikit-learn, etc.)
+    \end{itemize}
+\end{itemize}
+\end{tcolorbox}
+
+\subsubsection{Workflow Hybride Recommandé}
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[node distance=1.5cm]
+    
+    % Définir les styles
+    \tikzset{
+        box/.style={
+            draw,
+            rectangle,
+            rounded corners=5pt,
+            align=center,
+            minimum height=1.5cm,
+            minimum width=3cm,
+            line width=1pt
+        },
+        arrow/.style={
+            ->,
+            >=stealth,
+            line width=1.2pt
+        }
+    }
+    
+    % Éléments du workflow
+    \node[box, fill=blue!20] (powerquery) {Power Query\\ETL};
+    \node[box, fill=green!20, right=2.5cm of powerquery] (pbi_model) {Modèle\\Power BI};
+    \node[box, fill=yellow!20, right=2.5cm of pbi_model] (export) {Export\\CSV};
+    
+    \node[box, fill=orange!20, below=2cm of export] (python) {Python\\Notebooks};
+    \node[box, fill=red!20, left=2.5cm of python] (pbi_python) {Python\\dans Power BI};
+    \node[box, fill=purple!20, left=2.5cm of pbi_python] (dashboard) {Dashboard\\Final};
+    
+    % Flèches
+    \draw[arrow, blue!70] (powerquery) -- (pbi_model) node[midway, above] {Création};
+    \draw[arrow, green!70] (pbi_model) -- (export) node[midway, above] {Export};
+    \draw[arrow, orange!70] (export) -- (python) node[midway, right] {Chargement};
+    \draw[arrow, yellow!70] (pbi_model) -- (pbi_python) node[midway, right] {Intégration};
+    \draw[arrow, purple!70] (pbi_python) -- (dashboard);
+    \draw[arrow, purple!70] (python) -- (dashboard);
+    
+    % Légende
+    \node[above=0.5cm of powerquery, font=\bfseries] {Workflow Hybride Recommandé};
+    
+    \end{tikzpicture}
+    \caption{Workflow hybride combinant Power BI et Python pur}
+    \label{fig:workflow-hybride}
+\end{figure}
+
+\subsubsection{Implémentation Concrète du Projet Northwind}
+
+\begin{enumerate}[label=\arabic*.]
+    \item \textbf{Étape 1 - Export depuis Power BI} :
+    \begin{itemize}
+        \item Dans Power BI Desktop, sélectionnez chaque table
+        \item Clic droit → \textbf{Exporter les données} → \textbf{CSV}
+        \item Sauvegardez dans le dossier \texttt{data/}
+    \end{itemize}
+    
+    \item \textbf{Étape 2 - Création du script Python} :
+    \begin{itemize}
+        \item Créez un fichier \texttt{dashboard\_northwind.py}
+        \item ecrire le code python 
+        
+    \end{itemize}
+    
+    \item \textbf{Étape 3 - Exécution} :
+    \begin{lstlisting}[language=bash]
+# Installation des dépendances
+pip install pandas matplotlib numpy seaborn
+
+# Exécution du dashboard
+python dashboard_northwind.py
+
+# Ou en mode Jupyter
+jupyter notebook notebooks/dashboard_northwind.ipynb
+    \end{lstlisting}
+    
+    \item \textbf{Étape 4 - Versionnement} :
+    \begin{lstlisting}[language=bash]
+# Initialisation Git
+git init
+git add .
+git commit -m "Dashboard Northwind en Python pur"
+
+# Push sur GitHub
+git remote add origin https://github.com/votre-compte/northwind-python.git
+git push -u origin main
+    \end{lstlisting}
+\end{enumerate}
+
+\subsubsection{Résultat : un des graphes Python Autonome}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{Figure_python.png}
+    \caption{Exemple d'un des graphes générés en Python pur }
+    \label{fig:python-dashboard}
+\end{figure}
+
+\begin{tcolorbox}[colback=yellow!5!white, colframe=yellow!75!black, title=�� Conclusion sur les Deux Approches]
+Pour le projet Northwind, les deux approches sont valables :
+\begin{itemize}
+    \item \textbf{Python dans Power BI} : Parfait pour une démonstration rapide avec interactivité
+    \item \textbf{Python pur} : Idéal pour une solution reproductible, versionnable et déployable
+    
+\end{itemize}
+\textbf{Recommandation} : Commencez avec Power BI pour le prototypage rapide, puis exportez vers Python pour la production et le versionnement.
+\end{tcolorbox}
+
 \newpage
 \subsection{Dashboard Final Northwind}
-
 
 Notre dashboard final intègre 6 visuals Python , les voici :
 
@@ -728,7 +975,7 @@ Limite de mémoire & Augmentez la mémoire allouée à Power BI \\
 \newpage
 \section{Conclusion}
 
-Ce guide vous a accompagné de l'installation de Power BI Desktop à la création d'un projet d'entrepôt de données complet avec Northwind, incluant une analyse comparative avec Talend. Vous disposez maintenant de toutes les ressources nécessaires pour :
+Ce guide vous a accompagné de l'installation de Power BI Desktop à la création d'un projet d'entrepôt de données complet avec Northwind, incluant une analyse comparative avec Talend et deux approches Python. Vous disposez maintenant de toutes les ressources nécessaires pour :
 
 \begin{itemize}
     \item ✅ Installer et configurer Power BI Desktop
@@ -737,6 +984,9 @@ Ce guide vous a accompagné de l'installation de Power BI Desktop à la créatio
     \item ✅ Créer un projet structuré Northwind
     \item ✅ Importer et transformer des données multi-sources
     \item ✅ Construire un modèle de données optimisé
+    \item ✅ Utiliser Python dans Power BI pour des visualisations avancées
+    \item ✅ Développer des dashboards Python autonomes sans Power BI
+    \item ✅ Choisir l'approche adaptée à vos besoins
     \item ✅ Publier et partager vos analyses
 \end{itemize}
 
