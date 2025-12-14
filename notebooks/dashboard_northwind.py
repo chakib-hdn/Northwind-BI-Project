@@ -1,32 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-🎯 DASHBOARD NORTHWIND - ANALYSE COMPLÈTE
-📊 6 Visualisations Python avec les vraies données
-
-Structure :
-1. Importation des données (TF_Commande, Dim_Client, Dim_Employee, Dim_Temps)
-2. Fusion des tables (comme dans Power BI)
-3. 6 Graphiques :
-   - Volume des commandes par mois
-   - Top 10 clients
-   - Top 5 territoires
-   - Heatmap Clients vs Employés
-   - Répartition par région
-   - Évolution temporelle
-"""
-
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-from io import StringIO
-
-print("🎯 DASHBOARD NORTHWIND - ANALYSE COMPLÈTE")
-print("=" * 60)
-
-# ===========================================
-# 1. TES DONNÉES
-# ===========================================
 
 TF_Commande = """id_seq_fait,id_temps,id_seqEmployee,id_seqClient,nbr_commande_livrees,nbr_commande_non_livrees
 1,26,50,92,0,1
@@ -1125,8 +1096,395 @@ Dim_Temps = """id_temps,annee,mois_annee
 29,2006,06-2006
 """
 
-print("✅ Données chargées en mémoire")
-print(f"• TF_Commande : {len(TF_Commande.split('\\n'))} lignes")
-print(f"• Dim_Client : {len(Dim_Client.split('\\n'))} lignes")
-print(f"• Dim_Employee : {len(Dim_Employee.split('\\n'))} lignes")
-print(f"• Dim_Temps : {len(Dim_Temps.split('\\n'))} lignes")
+# %%
+# 2. CONVERSION EN DATAFRAMES
+import pandas as pd
+from io import StringIO
+
+# Parse les données textuelles
+tables = {}
+for name, data in [('TF_Commande', TF_Commande), 
+                   ('Dim_Client', Dim_Client),
+                   ('Dim_Employee', Dim_Employee),
+                   ('Dim_Temps', Dim_Temps)]:
+    try:
+        tables[name] = pd.read_csv(StringIO(data.strip()))
+        print(f"✅ {name}: {tables[name].shape}")
+    except Exception as e:
+        print(f"❌ Erreur avec {name}: {e}")
+
+# %%
+# 3. FUSION DES TABLES (comme dans ton Power BI)
+print("\n🔗 Fusion des tables...")
+
+try:
+    df = pd.merge(tables['TF_Commande'], tables['Dim_Temps'], on='id_temps', how='left')
+    df = pd.merge(df, tables['Dim_Employee'], on='id_seqEmployee', how='left')
+    df = pd.merge(df, tables['Dim_Client'], on='id_seqClient', how='left')
+
+    if 'Nom' in df.columns and 'Prenom' in df.columns:
+        df['Employe'] = df['Nom'] + ' ' + df['Prenom']
+
+    print(f"✅ Dataset final: {df.shape}")
+    print("\n📊 Aperçu des données:")
+    print(df.head())
+    
+except Exception as e:
+    print(f"❌ Erreur lors de la fusion: {e}")
+
+# %%
+# ===========================================
+# TES 6 GRAPHES EXACTEMENT COMME DANS TES SCRIPTS
+# ===========================================
+
+import matplotlib.pyplot as plt
+import numpy as np
+import matplotlib as mpl
+
+print("\n" + "="*60)
+print("📊 EXÉCUTION DE TES 6 GRAPHES")
+print("="*60)
+
+# Pour faciliter la référence
+dataset = df.copy()
+
+# %%
+print("\n1️⃣ GRAPHE 1: Nombre de commandes livrées et non livrées par mois et année")
+
+# Vérification des colonnes
+colonnes_requises = ['id_temps', 'nbr_commande_livrees', 'nbr_commande_non_livrees', 'mois_annee']
+colonnes_manquantes = [col for col in colonnes_requises if col not in dataset.columns]
+
+if colonnes_manquantes:
+    fig, ax = plt.subplots(figsize=(10, 2))
+    ax.text(0.5, 0.5, f"Glissez ces colonnes:\n{', '.join(colonnes_manquantes)}",
+            ha='center', va='center', fontsize=12, color='red',
+            bbox=dict(boxstyle="round,pad=0.5", facecolor="yellow", alpha=0.7))
+    ax.axis('off')
+    plt.show()
+
+else:
+    # Agrégation par mois
+    commandes_par_mois = dataset.groupby('mois_annee').agg({
+        'nbr_commande_livrees': 'sum',
+        'nbr_commande_non_livrees': 'sum'
+    }).reset_index()
+
+    commandes_par_mois['total_commandes'] = (
+        commandes_par_mois['nbr_commande_livrees'] +
+        commandes_par_mois['nbr_commande_non_livrees']
+    )
+
+    # Trier par date
+    try:
+        commandes_par_mois['date_sort'] = pd.to_datetime(
+            commandes_par_mois['mois_annee'] + '/01',
+            format='%m-%Y/%d'
+        )
+        commandes_par_mois = commandes_par_mois.sort_values('date_sort')
+    except:
+        commandes_par_mois = commandes_par_mois.sort_values('mois_annee')
+
+    # Création du graphique
+    fig, ax = plt.subplots(figsize=(14, 7))
+
+    x = range(len(commandes_par_mois))
+    mois_labels = commandes_par_mois['mois_annee'].tolist()
+
+    # Barres empilées
+    ax.bar(x, commandes_par_mois['nbr_commande_livrees'],
+           label='Commandes Livrées', color='green', alpha=0.7)
+    ax.bar(x, commandes_par_mois['nbr_commande_non_livrees'],
+           bottom=commandes_par_mois['nbr_commande_livrees'],
+           label='Commandes Non Livrées', color='red', alpha=0.7)
+
+    ax.set_xlabel('Mois', fontsize=12)
+    ax.set_ylabel('Nombre de Commandes', fontsize=12)
+    ax.set_title('VOLUME DES COMMANDES PAR MOIS', fontsize=14, fontweight='bold')
+    ax.set_xticks(x)
+    ax.set_xticklabels(mois_labels, rotation=45, ha='right')
+    ax.legend()
+    ax.grid(True, alpha=0.3)
+
+    # Ajouter les totaux au-dessus des barres
+    for i, total in enumerate(commandes_par_mois['total_commandes']):
+        ax.text(i, total + (total*0.01), f'{total:,}',
+                ha='center', va='bottom', fontsize=9)
+
+    # Statistiques
+    total_periode = commandes_par_mois['total_commandes'].sum()
+    stats_text = f"Total période: {total_periode:,} commandes"
+
+    plt.figtext(0.02, 0.02, stats_text, fontsize=10,
+                bbox=dict(boxstyle="round,pad=0.5", facecolor="lightgray", alpha=0.8))
+
+    plt.tight_layout()
+    plt.show()
+
+# %%
+print("\n2️⃣ GRAPHE 2: Nombre de commandes livrées pour le top 10 des clients")
+
+if 'CompanyName' in dataset.columns and 'nbr_commande_livrees' in dataset.columns:
+    # Grouper par client et sommer les commandes livrées
+    top_clients = dataset.groupby('CompanyName')['nbr_commande_livrees'].sum().nlargest(10)
+
+    plt.figure(figsize=(10, 6))
+    top_clients.sort_values().plot(kind='barh', color='skyblue')
+    plt.title("Top 10 Clients par commandes livrées", fontsize=14, fontweight='bold')
+    plt.xlabel("Nombre de commandes livrées", fontsize=12)
+    plt.grid(axis='x', alpha=0.3)
+    
+    # Ajouter les valeurs sur les barres
+    for i, (client, value) in enumerate(top_clients.sort_values().items()):
+        plt.text(value + (value*0.01), i, f'{value:,}', va='center', fontsize=10)
+    
+    plt.tight_layout()
+    plt.show()
+    
+    print(f"\n🏆 Top 3 clients:")
+    for i, (client, count) in enumerate(top_clients.nlargest(3).items(), 1):
+        print(f"   {i}. {client}: {count:,} commandes")
+else:
+    print("❌ Colonnes manquantes: 'CompanyName' ou 'nbr_commande_livrees'")
+
+# %%
+print("\n3️⃣ GRAPHE 3: Nombre de commandes livrées pour le top 5 des territoires")
+
+if 'TerritoryDescri' in dataset.columns and 'nbr_commande_livrees' in dataset.columns:
+    # Grouper par territoire et sommer les commandes livrées
+    top_territoires = dataset.groupby('TerritoryDescri')['nbr_commande_livrees'].sum().nlargest(5)
+    
+    plt.figure(figsize=(10, 6))
+    top_territoires.sort_values().plot(kind='barh', color='purple')
+    plt.title("Top 5 Territoires par commandes livrées", fontsize=14, fontweight='bold')
+    plt.xlabel("Nombre de commandes", fontsize=12)
+    plt.grid(axis='x', alpha=0.3)
+    
+    # Ajouter les valeurs sur les barres
+    for i, (territoire, value) in enumerate(top_territoires.sort_values().items()):
+        plt.text(value + (value*0.01), i, f'{value:,}', va='center', fontsize=10)
+    
+    plt.tight_layout()
+    plt.show()
+    
+    print(f"\n🗺️ Top 3 territoires:")
+    for i, (territoire, count) in enumerate(top_territoires.nlargest(3).items(), 1):
+        print(f"   {i}. {territoire}: {count:,} commandes")
+else:
+    print("❌ Colonnes manquantes: 'TerritoryDescri' ou 'nbr_commande_livrees'")
+
+# %%
+print("\n4️⃣ GRAPHE 4: Heatmap - Top 20 Clients x Top 9 Employés")
+
+# Vérifier les colonnes nécessaires
+required_cols_heatmap = ['CompanyName', 'Nom', 'Prenom', 'nbr_commande_livrees']
+missing_cols_heatmap = [col for col in required_cols_heatmap if col not in dataset.columns]
+
+if missing_cols_heatmap:
+    print(f"❌ Colonnes manquantes pour la heatmap: {missing_cols_heatmap}")
+else:
+    # Créer nom complet de l'employé
+    dataset['Employe'] = dataset['Nom'] + " " + dataset['Prenom']
+
+    # Calcul total commandes par client
+    total_client = dataset.groupby('CompanyName')['nbr_commande_livrees'].sum()
+
+    # Top 20 clients
+    top_clients = total_client.nlargest(20).index
+    df_top = dataset[dataset['CompanyName'].isin(top_clients)]
+
+    # Top 9 employés
+    top_employes = dataset.groupby('Employe')['nbr_commande_livrees'].sum().nlargest(9).index
+    
+    # Filtrer pour garder seulement les top employés
+    df_top = df_top[df_top['Employe'].isin(top_employes)]
+
+    # Pivot table : clients en lignes, employés en colonnes
+    df_pivot = df_top.pivot_table(
+        index='CompanyName', 
+        columns='Employe', 
+        values='nbr_commande_livrees', 
+        aggfunc='sum', 
+        fill_value=0
+    )
+
+    # Réorganiser par ordre décroissant
+    df_pivot = df_pivot.loc[top_clients.intersection(df_pivot.index)]
+    df_pivot = df_pivot[top_employes.intersection(df_pivot.columns)]
+
+    plt.figure(figsize=(14, 8))
+    
+    # Créer la heatmap
+    im = plt.imshow(df_pivot, cmap='YlGnBu', aspect='auto', interpolation='nearest')
+    
+    # Configurer les axes
+    plt.xticks(range(len(df_pivot.columns)), df_pivot.columns, rotation=90, fontsize=9)
+    plt.yticks(range(len(df_pivot.index)), df_pivot.index, fontsize=9)
+    
+    # Ajouter la barre de couleur
+    cbar = plt.colorbar(im)
+    cbar.set_label('Commandes livrées', fontsize=12)
+    
+    plt.title("Heatmap : Top 20 Clients x Top 9 Employés", fontsize=14, fontweight='bold', pad=20)
+    
+    # Ajouter les valeurs dans les cellules
+    for i in range(len(df_pivot.index)):
+        for j in range(len(df_pivot.columns)):
+            value = df_pivot.iloc[i, j]
+            if value > 0:
+                plt.text(j, i, f'{int(value)}', ha='center', va='center', 
+                        fontsize=8, color='black' if value < df_pivot.values.max()/2 else 'white')
+    
+    plt.tight_layout()
+    plt.show()
+    
+    print(f"\n🔥 Statistiques de la heatmap:")
+    print(f"   • Clients analysés: {len(df_pivot.index)}")
+    print(f"   • Employés analysés: {len(df_pivot.columns)}")
+    print(f"   • Total interactions: {df_pivot.values.sum():,}")
+
+# %%
+print("\n5️⃣ GRAPHE 5: Nombre de commandes livrées par région")
+
+if 'Region' in dataset.columns and 'nbr_commande_livrees' in dataset.columns:
+    # Grouper par région
+    commandes_region = dataset.groupby('Region')['nbr_commande_livrees'].sum()
+    
+    # Filtrer les régions vides ou NaN
+    commandes_region = commandes_region[commandes_region > 0]
+    
+    if len(commandes_region) > 0:
+        plt.figure(figsize=(9, 9))
+        
+        # Utiliser une palette de couleurs
+        colors = plt.cm.Set3(np.linspace(0, 1, len(commandes_region)))
+        
+        wedges, texts, autotexts = plt.pie(
+            commandes_region.values, 
+            labels=commandes_region.index, 
+            autopct='%1.1f%%', 
+            colors=colors,
+            startangle=90,
+            textprops={'fontsize': 11}
+        )
+        
+        # Améliorer l'affichage des pourcentages
+        for autotext in autotexts:
+            autotext.set_color('black')
+            autotext.set_fontweight('bold')
+        
+        plt.title("Répartition des commandes livrées par région", fontsize=14, fontweight='bold', pad=20)
+        
+        # Ajouter une légende
+        plt.legend(wedges, commandes_region.index, title="Régions", 
+                  loc="center left", bbox_to_anchor=(1, 0, 0.5, 1))
+        
+        plt.tight_layout()
+        plt.show()
+        
+        print(f"\n🌍 Répartition par région:")
+        total = commandes_region.sum()
+        for region, count in commandes_region.items():
+            pourcentage = (count / total * 100)
+            print(f"   • {region}: {count:,} commandes ({pourcentage:.1f}%)")
+    else:
+        print("❌ Aucune donnée de région disponible")
+else:
+    print("❌ Colonnes manquantes: 'Region' ou 'nbr_commande_livrees'")
+
+# %%
+print("\n6️⃣ GRAPHE 6: Évolution du nombre de commandes livrées et non livrées dans le temps")
+
+if 'mois_annee' in dataset.columns:
+    # Calculer le total des commandes par mois
+    evolution_df = dataset.groupby('mois_annee')[['nbr_commande_livrees', 'nbr_commande_non_livrees']].sum()
+    
+    # Trier par date
+    try:
+        evolution_df['date_sort'] = pd.to_datetime(evolution_df.index + '/01', format='%m-%Y/%d')
+        evolution_df = evolution_df.sort_values('date_sort')
+        evolution_df = evolution_df.drop('date_sort', axis=1)
+    except:
+        evolution_df = evolution_df.sort_index()
+    
+    if len(evolution_df) > 0:
+        plt.figure(figsize=(12, 6))
+        
+        # Créer le graphique de ligne
+        plt.plot(evolution_df.index, evolution_df['nbr_commande_livrees'], 
+                marker='o', linestyle='-', linewidth=2, color='green', 
+                markersize=8, label='Livrées')
+        
+        plt.plot(evolution_df.index, evolution_df['nbr_commande_non_livrees'], 
+                marker='s', linestyle='--', linewidth=2, color='red', 
+                markersize=6, label='Non-livrées')
+        
+        plt.title("Évolution mensuelle des commandes livrées et non-livrées", 
+                 fontsize=14, fontweight='bold')
+        plt.xlabel("Mois", fontsize=12)
+        plt.ylabel("Nombre de commandes", fontsize=12)
+        plt.xticks(rotation=45, ha='right')
+        plt.legend(fontsize=11)
+        plt.grid(True, alpha=0.3)
+        
+        # Ajouter des annotations pour les points importants
+        max_livrees_idx = evolution_df['nbr_commande_livrees'].idxmax()
+        max_livrees = evolution_df.loc[max_livrees_idx, 'nbr_commande_livrees']
+        
+        plt.annotate(f'Max: {max_livrees:,}', 
+                    xy=(evolution_df.index.get_loc(max_livrees_idx), max_livrees),
+                    xytext=(10, 20), textcoords='offset points',
+                    arrowprops=dict(arrowstyle='->', color='green'),
+                    fontsize=10, color='green')
+        
+        plt.tight_layout()
+        plt.show()
+        
+        # Analyse de tendance
+        print(f"\n📈 Analyse de tendance:")
+        if len(evolution_df) >= 2:
+            first_livrees = evolution_df['nbr_commande_livrees'].iloc[0]
+            last_livrees = evolution_df['nbr_commande_livrees'].iloc[-1]
+            evolution_livrees = ((last_livrees - first_livrees) / first_livrees * 100) if first_livrees > 0 else 0
+            
+            first_non_livrees = evolution_df['nbr_commande_non_livrees'].iloc[0]
+            last_non_livrees = evolution_df['nbr_commande_non_livrees'].iloc[-1]
+            evolution_non_livrees = ((last_non_livrees - first_non_livrees) / first_non_livrees * 100) if first_non_livrees > 0 else 0
+            
+            print(f"   • Évolution commandes livrées: {evolution_livrees:+.1f}%")
+            print(f"   • Évolution commandes non-livrées: {evolution_non_livrees:+.1f}%")
+            print(f"   • Meilleur mois (livrées): {max_livrees_idx} ({max_livrees:,} commandes)")
+    else:
+        print("❌ Aucune donnée temporelle disponible")
+else:
+    print("❌ Colonne manquante: 'mois_annee'")
+
+# %%
+print("\n" + "="*60)
+print("🎉 TES 6 GRAPHES ONT ÉTÉ GÉNÉRÉS AVEC SUCCÈS !")
+print("="*60)
+
+# Statistiques résumé
+print("\n📋 RÉSUMÉ DES STATISTIQUES:")
+
+if 'nbr_commande_livrees' in dataset.columns:
+    total_livrees = dataset['nbr_commande_livrees'].sum()
+    total_non_livrees = dataset['nbr_commande_non_livrees'].sum() if 'nbr_commande_non_livrees' in dataset.columns else 0
+    total_commandes = total_livrees + total_non_livrees
+    
+    print(f"   • Total commandes analysées: {total_commandes:,}")
+    print(f"   • Commandes livrées: {total_livrees:,}")
+    print(f"   • Commandes non livrées: {total_non_livrees:,}")
+    print(f"   • Taux de livraison: {(total_livrees/total_commandes*100 if total_commandes > 0 else 0):.1f}%")
+
+if 'CompanyName' in dataset.columns:
+    nb_clients = dataset['CompanyName'].nunique()
+    print(f"   • Nombre de clients uniques: {nb_clients}")
+
+if 'Employe' in dataset.columns:
+    nb_employes = dataset['Employe'].nunique()
+    print(f"   • Nombre d'employés uniques: {nb_employes}")
+
+if 'TerritoryDescri' in dataset.columns:
+    nb_territoires = dataset['TerritoryDescri'].nunique()
+    print(f"   • Nombre de territoires: {nb_territoires}")
