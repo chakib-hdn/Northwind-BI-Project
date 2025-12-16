@@ -1,0 +1,59 @@
+id_seqEmployee,id_employee_prod,source_prod,Nom,Prenom,Territory,TerritoryDescri,Region
+1,1,SSMS,Davolio,Nancy,6897.0,Wilton                                            ,1.0
+2,1,SSMS,Davolio,Nancy,19713.0,Neward                                            ,1.0
+3,2,SSMS,Fuller,Andrew,1581.0,Westboro                                          ,1.0
+4,2,SSMS,Fuller,Andrew,1730.0,Bedford                                           ,1.0
+5,2,SSMS,Fuller,Andrew,1833.0,Georgetow                                         ,1.0
+6,2,SSMS,Fuller,Andrew,2116.0,Boston                                            ,1.0
+7,2,SSMS,Fuller,Andrew,2139.0,Cambridge                                         ,1.0
+8,2,SSMS,Fuller,Andrew,2184.0,Braintree                                         ,1.0
+9,2,SSMS,Fuller,Andrew,40222.0,Louisville                                        ,1.0
+10,3,SSMS,Leverling,Janet,30346.0,Atlanta                                           ,4.0
+11,3,SSMS,Leverling,Janet,31406.0,Savannah                                          ,4.0
+12,3,SSMS,Leverling,Janet,32859.0,Orlando                                           ,4.0
+13,3,SSMS,Leverling,Janet,33607.0,Tampa                                             ,4.0
+14,4,SSMS,Peacock,Margaret,20852.0,Rockville                                         ,1.0
+15,4,SSMS,Peacock,Margaret,27403.0,Greensboro                                        ,1.0
+16,4,SSMS,Peacock,Margaret,27511.0,Cary                                              ,1.0
+17,5,SSMS,Buchanan,Steven,2903.0,Providence                                        ,1.0
+18,5,SSMS,Buchanan,Steven,7960.0,Morristown                                        ,1.0
+19,5,SSMS,Buchanan,Steven,8837.0,Edison                                            ,1.0
+20,5,SSMS,Buchanan,Steven,10019.0,New York                                          ,1.0
+21,5,SSMS,Buchanan,Steven,10038.0,New York                                          ,1.0
+22,5,SSMS,Buchanan,Steven,11747.0,Mellvile                                          ,1.0
+23,5,SSMS,Buchanan,Steven,14450.0,Fairport                                          ,1.0
+24,6,SSMS,Suyama,Michael,85014.0,Phoenix                                           ,2.0
+25,6,SSMS,Suyama,Michael,85251.0,Scottsdale                                        ,2.0
+26,6,SSMS,Suyama,Michael,98004.0,Bellevue                                          ,2.0
+27,6,SSMS,Suyama,Michael,98052.0,Redmond                                           ,2.0
+28,6,SSMS,Suyama,Michael,98104.0,Seattle                                           ,2.0
+29,7,SSMS,King,Robert,60179.0,Hoffman Estates                                   ,2.0
+30,7,SSMS,King,Robert,60601.0,Chicago                                           ,2.0
+31,7,SSMS,King,Robert,80202.0,Denver                                            ,2.0
+32,7,SSMS,King,Robert,80909.0,Colorado Springs                                  ,2.0
+33,7,SSMS,King,Robert,90405.0,Santa Monica                                      ,2.0
+34,7,SSMS,King,Robert,94025.0,Menlo Park                                        ,2.0
+35,7,SSMS,King,Robert,94105.0,San Francisco                                     ,2.0
+36,7,SSMS,King,Robert,95008.0,Campbell                                          ,2.0
+37,7,SSMS,King,Robert,95054.0,Santa Clara                                       ,2.0
+38,7,SSMS,King,Robert,95060.0,Santa Cruz                                        ,2.0
+39,8,SSMS,Callahan,Laura,19428.0,Philadelphia                                      ,3.0
+40,8,SSMS,Callahan,Laura,44122.0,Beachwood                                         ,3.0
+41,8,SSMS,Callahan,Laura,45839.0,Findlay                                           ,3.0
+42,8,SSMS,Callahan,Laura,53404.0,Racine                                            ,3.0
+43,9,SSMS,Dodsworth,Anne,3049.0,Hollis                                            ,3.0
+44,9,SSMS,Dodsworth,Anne,3801.0,Portsmouth                                        ,3.0
+45,9,SSMS,Dodsworth,Anne,48075.0,Southfield                                        ,3.0
+46,9,SSMS,Dodsworth,Anne,48084.0,Troy                                              ,3.0
+47,9,SSMS,Dodsworth,Anne,48304.0,Bloomfield Hills                                  ,3.0
+48,9,SSMS,Dodsworth,Anne,55113.0,Roseville                                         ,3.0
+49,9,SSMS,Dodsworth,Anne,55439.0,Minneapolis                                       ,3.0
+50,1,ACCESS,Freehafer,Nancy,,WA,
+51,2,ACCESS,Cencini,Andrew,,WA,
+52,3,ACCESS,Kotas,Jan,,WA,
+53,4,ACCESS,Sergienko,Mariya,,WA,
+54,5,ACCESS,Thorpe,Steven,,WA,
+55,6,ACCESS,Neipper,Michael,,WA,
+56,7,ACCESS,Zare,Robert,,WA,
+57,8,ACCESS,Giussani,Laura,,WA,
+58,9,ACCESS,Hellung-Larsen,Anne,,WA,

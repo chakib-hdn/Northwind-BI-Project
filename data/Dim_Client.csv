@@ -1,0 +1,121 @@
+id_seqClient,id_client_prod,source_prod,CompanyName,City
+1,ALFKI,SSMS,Alfreds Futterkiste,Berlin
+2,ANATR,SSMS,Ana Trujillo Emparedados y helados,M xico D.F.
+3,ANTON,SSMS,Antonio Moreno Taquer a,M xico D.F.
+4,AROUT,SSMS,Around the Horn,London
+5,BERGS,SSMS,Berglunds snabbk p,Lule 
+6,BLAUS,SSMS,Blauer See Delikatessen,Mannheim
+7,BLONP,SSMS,Blondesddsl p re et fils,Strasbourg
+8,BOLID,SSMS,B lido Comidas preparadas,Madrid
+9,BONAP,SSMS,Bon app',Marseille
+10,BOTTM,SSMS,Bottom-Dollar Markets,Tsawassen
+11,BSBEV,SSMS,B's Beverages,London
+12,CACTU,SSMS,Cactus Comidas para llevar,Buenos Aires
+13,CENTC,SSMS,Centro comercial Moctezuma,M xico D.F.
+14,CHOPS,SSMS,Chop-suey Chinese,Bern
+15,COMMI,SSMS,Com rcio Mineiro,Sao Paulo
+16,CONSH,SSMS,Consolidated Holdings,London
+17,DRACD,SSMS,Drachenblut Delikatessen,Aachen
+18,DUMON,SSMS,Du monde entier,Nantes
+19,EASTC,SSMS,Eastern Connection,London
+20,ERNSH,SSMS,Ernst Handel,Graz
+21,FAMIA,SSMS,Familia Arquibaldo,Sao Paulo
+22,FISSA,SSMS,FISSA Fabrica Inter. Salchichas S.A.,Madrid
+23,FOLIG,SSMS,Folies gourmandes,Lille
+24,FOLKO,SSMS,Folk och f  HB,Br cke
+25,FRANK,SSMS,Frankenversand,M nchen
+26,FRANR,SSMS,France restauration,Nantes
+27,FRANS,SSMS,Franchi S.p.A.,Torino
+28,FURIB,SSMS,Furia Bacalhau e Frutos do Mar,Lisboa
+29,GALED,SSMS,Galer a del gastr nomo,Barcelona
+30,GODOS,SSMS,Godos Cocina T pica,Sevilla
+31,GOURL,SSMS,Gourmet Lanchonetes,Campinas
+32,GREAL,SSMS,Great Lakes Food Market,Eugene
+33,GROSR,SSMS,GROSELLA-Restaurante,Caracas
+34,HANAR,SSMS,Hanari Carnes,Rio de Janeiro
+35,HILAA,SSMS,HILARION-Abastos,San Crist bal
+36,HUNGC,SSMS,Hungry Coyote Import Store,Elgin
+37,HUNGO,SSMS,Hungry Owl All-Night Grocers,Cork
+38,ISLAT,SSMS,Island Trading,Cowes
+39,KOENE,SSMS,K niglich Essen,Brandenburg
+40,LACOR,SSMS,La corne d'abondance,Versailles
+41,LAMAI,SSMS,La maison d'Asie,Toulouse
+42,LAUGB,SSMS,Laughing Bacchus Wine Cellars,Vancouver
+43,LAZYK,SSMS,Lazy K Kountry Store,Walla Walla
+44,LEHMS,SSMS,Lehmanns Marktstand,Frankfurt a.M.
+45,LETSS,SSMS,Let's Stop N Shop,San Francisco
+46,LILAS,SSMS,LILA-Supermercado,Barquisimeto
+47,LINOD,SSMS,LINO-Delicateses,I. de Margarita
+48,LONEP,SSMS,Lonesome Pine Restaurant,Portland
+49,MAGAA,SSMS,Magazzini Alimentari Riuniti,Bergamo
+50,MAISD,SSMS,Maison Dewey,Bruxelles
+51,MEREP,SSMS,M re Paillarde,Montr al
+52,MORGK,SSMS,Morgenstern Gesundkost,Leipzig
+53,NORTS,SSMS,North/South,London
+54,OCEAN,SSMS,Oc ano Atl ntico Ltda.,Buenos Aires
+55,OLDWO,SSMS,Old World Delicatessen,Anchorage
+56,OTTIK,SSMS,Ottilies K seladen,K ln
+57,PARIS,SSMS,Paris sp cialit s,Paris
+58,PERIC,SSMS,Pericles Comidas cl sicas,M xico D.F.
+59,PICCO,SSMS,Piccolo und mehr,Salzburg
+60,PRINI,SSMS,Princesa Isabel Vinhos,Lisboa
+61,QUEDE,SSMS,Que Del cia,Rio de Janeiro
+62,QUEEN,SSMS,Queen Cozinha,Sao Paulo
+63,QUICK,SSMS,QUICK-Stop,Cunewalde
+64,RANCH,SSMS,Rancho grande,Buenos Aires
+65,RATTC,SSMS,Rattlesnake Canyon Grocery,Albuquerque
+66,REGGC,SSMS,Reggiani Caseifici,Reggio Emilia
+67,RICAR,SSMS,Ricardo Adocicados,Rio de Janeiro
+68,RICSU,SSMS,Richter Supermarkt,Gen ve
+69,ROMEY,SSMS,Romero y tomillo,Madrid
+70,SANTG,SSMS,Sant  Gourmet,Stavern
+71,SAVEA,SSMS,Save-a-lot Markets,Boise
+72,SEVES,SSMS,Seven Seas Imports,London
+73,SIMOB,SSMS,Simons bistro,Kobenhavn
+74,SPECD,SSMS,Sp cialit s du monde,Paris
+75,SPLIR,SSMS,Split Rail Beer & Ale,Lander
+76,SUPRD,SSMS,Supr mes d lices,Charleroi
+77,THEBI,SSMS,The Big Cheese,Portland
+78,THECR,SSMS,The Cracker Box,Butte
+79,TOMSP,SSMS,Toms Spezialit ten,M nster
+80,TORTU,SSMS,Tortuga Restaurante,M xico D.F.
+81,TRADH,SSMS,Tradi  o Hipermercados,Sao Paulo
+82,TRAIH,SSMS,Trail's Head Gourmet Provisioners,Kirkland
+83,VAFFE,SSMS,Vaffeljernet, rhus
+84,VICTE,SSMS,Victuailles en stock,Lyon
+85,VINET,SSMS,Vins et alcools Chevalier,Reims
+86,WANDK,SSMS,Die Wandernde Kuh,Stuttgart
+87,WARTH,SSMS,Wartian Herkku,Oulu
+88,WELLI,SSMS,Wellington Importadora,Resende
+89,WHITC,SSMS,White Clover Markets,Seattle
+90,WILMK,SSMS,Wilman Kala,Helsinki
+91,WOLZA,SSMS,Wolski  Zajazd,Warszawa
+92,1,ACCESS,Company A,Seattle
+93,2,ACCESS,Company B,Boston
+94,3,ACCESS,Company C,Los Angelas
+95,4,ACCESS,Company D,New York
+96,5,ACCESS,Company E,Minneapolis
+97,6,ACCESS,Company F,Milwaukee
+98,7,ACCESS,Company G,Boise
+99,8,ACCESS,Company H,Portland
+100,9,ACCESS,Company I,Salt Lake City
+101,10,ACCESS,Company J,Chicago
+102,11,ACCESS,Company K,Miami
+103,12,ACCESS,Company L,Las Vegas
+104,13,ACCESS,Company M,Memphis
+105,14,ACCESS,Company N,Denver
+106,15,ACCESS,Company O,Honolulu
+107,16,ACCESS,Company P,San Francisco
+108,17,ACCESS,Company Q,Seattle
+109,18,ACCESS,Company R,Boston
+110,19,ACCESS,Company S,Los Angelas
+111,20,ACCESS,Company T,New York
+112,21,ACCESS,Company U,Minneapolis
+113,22,ACCESS,Company V,Milwaukee
+114,23,ACCESS,Company W,Portland
+115,24,ACCESS,Company X,Salt Lake City
+116,25,ACCESS,Company Y,Chicago
+117,26,ACCESS,Company Z,Miami
+118,27,ACCESS,Company AA,Las Vegas
+119,28,ACCESS,Company BB,Memphis
+120,29,ACCESS,Company CC,Denver

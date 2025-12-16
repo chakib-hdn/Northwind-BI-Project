@@ -1,3 +1,11 @@
+# %% [markdown]
+# 🎯 VRAI DASHBOARD AVEC TES DONNÉES
+# Pas de simulation, que du réel !
+
+# %%
+# 1. COLE TES DONNÉES ICI DIRECTEMENT
+
+# Exemple de format - REMPLACE ÇA PAR TES VRAIES DONNÉES
 
 TF_Commande = """id_seq_fait,id_temps,id_seqEmployee,id_seqClient,nbr_commande_livrees,nbr_commande_non_livrees
 1,26,50,92,0,1
@@ -1488,3 +1496,5 @@ if 'Employe' in dataset.columns:
 if 'TerritoryDescri' in dataset.columns:
     nb_territoires = dataset['TerritoryDescri'].nunique()
     print(f"   • Nombre de territoires: {nb_territoires}")
+
+print("\n✅ Ce sont TES vraies données, pas des simulations !")

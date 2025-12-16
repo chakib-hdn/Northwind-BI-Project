@@ -16,6 +16,36 @@
 
 \geometry{margin=2.5cm}
 
+% Configuration pour les listings avec fond noir
+\definecolor{darkbg}{RGB}{40, 40, 40}
+\definecolor{codegreen}{RGB}{152, 195, 121}
+\definecolor{codegray}{RGB}{171, 178, 191}
+\definecolor{codepurple}{RGB}{198, 120, 221}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{darkbg},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{codepurple},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codegreen},
+    basicstyle=\ttfamily\footnotesize\color{white},
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2,
+    frame=single,
+    framerule=0.5pt,
+    rulecolor=\color{gray!50}
+}
+
+\lstset{style=mystyle}
+
 \title{Guide Complet : Power BI Desktop}
 % =========================
 % PAGE DE GARDE
@@ -105,7 +135,7 @@ Résolution écran & 1440x900 ou supérieure \\
 \end{enumerate}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.75\linewidth]{desktop-install-01.png}
+    \includegraphics[width=0.75\linewidth]{Interface d'installation de power bi desktop.png}
     \caption{Interface d'installation de power bi desktop}
     \label{fig:pbi-install}
 \end{figure}
@@ -141,7 +171,7 @@ Résolution écran & 1440x900 ou supérieure \\
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\linewidth]{Capture d'écran 2025-12-10 194128.PNG}
+    \includegraphics[width=\linewidth]{Anatomie de l'interface Power BI Desktop.PNG}
     \caption{Anatomie de l'interface Power BI Desktop}
     \label{fig:pbi-interface}
 \end{figure}
@@ -319,6 +349,12 @@ C:\Users\IHADDADENE Chakib\Documents\Power BI Projects\Northwind_DW
     \begin{itemize}
         \item Serveur : \texttt{DESKTOP-VEO1CEQ\textbackslash SQLCHAKIB}
         \item Base de données : \texttt{Northwind}
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.75\linewidth]{connexion ssms.png}
+            \caption{Connexion a la base de données SSMS}
+            \label{fig:placeholder}
+        \end{figure}
         \item Mode de connexion : \textbf{Importer} (recommandé)
     \end{itemize}
     \item Sélectionnez les tables nécessaires :
@@ -330,6 +366,12 @@ C:\Users\IHADDADENE Chakib\Documents\Power BI Projects\Northwind_DW
         \item Territories
     \end{itemize}
 \end{enumerate}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{selection des données ssms.png}
+    \caption{Selection des tables nécessaires}
+    \label{fig:placeholder}
+\end{figure}
 
 \subsubsection{Importation des Fichiers Excel}
 \begin{enumerate}[label=\arabic*.]
@@ -342,6 +384,12 @@ C:\Users\IHADDADENE Chakib\Documents\Power BI Projects\Northwind_DW
         \item Orders.xlsx
     \end{itemize}
 \end{enumerate}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{Imporation des données excel.png}
+    \caption{Importation des données excel}
+    \label{fig:placeholder}
+\end{figure}
 
 \subsection{Transformation avec Power Query}
 
@@ -353,11 +401,11 @@ C:\Users\IHADDADENE Chakib\Documents\Power BI Projects\Northwind_DW
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\linewidth]{Capture d'écran 2025-12-10 094846.png}
-    \caption{Éditeur Power Query avec requêtes Northwind
-}
-    \label{fig:placeholder}
+    \includegraphics[width=1\linewidth]{Éditeur Power Query avec requêtes Northwind.png}
+    \caption{Éditeur Power Query avec requêtes Northwind}
+    \label{fig:power-query-editor}
 \end{figure}
+
 \subsubsection{Renommage des Requêtes}
 \begin{enumerate}[label=\arabic*.]
     \item Dans le volet de navigation Power Query :
@@ -413,9 +461,9 @@ C:\Users\IHADDADENE Chakib\Documents\Power BI Projects\Northwind_DW
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\linewidth]{Capture d'écran 2025-12-08 221202.png}
+    \includegraphics[width=1\linewidth]{Modèle de données final avec relations.png}
     \caption{Modèle de données final avec relations}
-    \label{fig:placeholder}
+    \label{fig:data-model}
 \end{figure}
 
 \section{Comparaison Power BI vs Talend pour l'ETL}
@@ -482,7 +530,7 @@ C:\Users\IHADDADENE Chakib\Documents\Power BI Projects\Northwind_DW
 \hline
 \textbf{Power Query (M)} & \textbf{Talend (Java)} \\
 \hline
-\begin{lstlisting}[language=PowerQuery, basicstyle=\tiny]
+\begin{lstlisting}[language=PowerQuery]
 let
     Source = Orders_ssms,
     #"Filtered Rows" = 
@@ -493,7 +541,7 @@ let
 in
     #"Filtered Rows"
 \end{lstlisting} &
-\begin{lstlisting}[language=Java, basicstyle=\tiny]
+\begin{lstlisting}[language=Java]
 // Composant tFilterRow
 row1.ShippedDate != null
 
@@ -521,6 +569,232 @@ if(input_row.ShippedDate != null) {
 \end{itemize}
 \end{tcolorbox}
 
+\section{Expérience Pratique : Talend vs Power BI pour le projet Northwind}
+
+\subsection{Contexte d'Implémentation}
+
+Dans le cadre de ce projet, j'ai implémenté la même solution d'entrepôt de données Northwind avec deux outils différents : Power BI et Talend. L'objectif était de remplir un entrepôt de données vide sur SQL Server Management Studio (SSMS) à partir de deux sources distinctes :
+
+\begin{itemize}
+    \item \textbf{Source 1} : Base de données Northwind existante sur SSMS
+    \item \textbf{Source 2} : Données complémentaires au format Microsoft Access
+    \item \textbf{Cible} : Entrepôt SSMS vide avec modèle en étoile
+\end{itemize}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{Dim_Client_Talend.png}
+    \caption{Job Talend complet pour la dimension client}
+    \label{fig:talend-job-full}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{Dim_Employee_Talend.png}
+    \caption{Job Talend complet pour la dimension employee}
+    \label{fig:talend-job-full}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{Dim_Temps_Talend.png}
+    \caption{Job Talend complet pour la dimension temps}
+    \label{fig:talend-job-full}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{TF_Commande_Talend.png}
+    \caption{Job Talend complet pour la table de fait}
+    \label{fig:talend-job-full}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{TF_Commande_Jointure_Talend.png}
+    \caption{Jointure de creation de la table de fait}
+    \label{fig:talend-job-full}
+\end{figure}
+
+\subsection{Implémentation avec Talend}
+
+\subsubsection{Architecture du Job Talend}
+
+Le job Talend a été structuré comme suit :
+
+\begin{enumerate}[label=\arabic*.]
+    \item \textbf{Extraction des données sources} :
+    \begin{itemize}
+        \item Connexion à SQL Server via \texttt{tMSSqlInput}
+        \item Lecture des fichiers Access via \texttt{tFileInputDelimited}
+    \end{itemize}
+    
+    \item \textbf{Transformations principales} :
+    \begin{itemize}
+        \item \texttt{tMap\_2} : Jointures et transformations complexes
+        \item \texttt{tMap} : Nettoyage et standardisation
+        \item \texttt{tJavaRow} : Calculs personnalisés en Java
+    \end{itemize}
+    
+    \item \textbf{Chargement vers SSMS} :
+    \begin{itemize}
+        \item \texttt{tMSSqlOutput} pour chaque table dimensionnelle
+        \item Gestion des clés primaires et étrangères
+    \end{itemize}
+\end{enumerate}
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[node distance=1cm]
+    
+    \tikzset{
+        component/.style={
+            draw,
+            rectangle,
+            rounded corners=5pt,
+            align=center,
+            minimum height=1cm,
+            minimum width=2.5cm,
+            fill=blue!10,
+            line width=1pt
+        },
+        source/.style={
+            draw,
+            ellipse,
+            align=center,
+            minimum height=1cm,
+            minimum width=2cm,
+            fill=green!10,
+            line width=1pt
+        },
+        target/.style={
+            draw,
+            ellipse,
+            align=center,
+            minimum height=1cm,
+            minimum width=2cm,
+            fill=red!10,
+            line width=1pt
+        },
+        arrow/.style={
+            ->,
+            >=stealth,
+            line width=1pt
+        }
+    }
+    
+    % Sources
+    \node[source] (ssms) {SSMS\\Northwind};
+    \node[source, right=2cm of ssms] (access) {Microsoft\\Access};
+    
+    % Composants d'entrée
+    \node[component, below=1.5cm of ssms] (input1) {tMSSqlInput};
+    \node[component, below=1.5cm of access] (input2) {tFileInput\\Delimited};
+    
+    % Composants de transformation
+    \node[component, below=1.5cm of $(input1.south)!0.5!(input2.south)$] (tmap2) {tMap\_2};
+    \node[component, left=1.5cm of tmap2] (tmap) {tMap};
+    \node[component, right=1.5cm of tmap2] (javarow) {tJavaRow};
+    
+    % Sorties
+    \node[target, below=2cm of tmap2] (tf) {TF\_Commande};
+    \node[target, left=1cm of tf] (dimemp) {Dim\_Employee};
+    \node[target, left=1cm of dimemp] (dimcli) {Dim\_Client};
+    \node[target, right=1cm of tf] (dimtmp) {Dim\_Temps};
+    
+    % Flèches
+    \draw[arrow] (ssms) -- (input1);
+    \draw[arrow] (access) -- (input2);
+    \draw[arrow] (input1) -- (tmap2);
+    \draw[arrow] (input2) -- (tmap2);
+    \draw[arrow] (tmap) -- (tmap2);
+    \draw[arrow] (tmap2) -- (javarow);
+    \draw[arrow] (javarow) -- (tf);
+    \draw[arrow] (tmap) -- (dimemp);
+    \draw[arrow] (tmap) -- (dimcli);
+    \draw[arrow] (javarow) -- (dimtmp);
+    
+    \end{tikzpicture}
+    \caption{Architecture simplifiée du flux de données Talend}
+    \label{fig:talend-architecture}
+\end{figure}
+
+\subsection{Comparaison Pratique des Résultats}
+
+\subsubsection{Volumes de Données Traités}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Table} & \textbf{Lignes Sources} & \textbf{Talend} & \textbf{Power BI} \\
+\hline
+Dim\_Temps & 878 dates & 878 & 878 \\
+Dim\_Client & 120 clients & 120 & 120 \\
+Dim\_Employee & 58 employés & 58 & 58 \\
+TF\_Commande & 878 commandes & 878 & 878 \\
+\hline
+
+\hline
+\end{tabular}
+\caption{Volumes identiques traités par les deux outils}
+\end{table}
+
+\subsubsection{Métriques Comparatives}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|c|c|}
+\hline
+\textbf{Métrique} & \textbf{Talend} & \textbf{Power BI} \\
+\hline
+Temps de développement & 8-10 heures & 2-3 heures \\
+Temps d'exécution & 15-20 secondes & 8-12 secondes \\
+Complexité & Élevée (Java + XML) & Moyenne (M) \\
+Apprentissage requis & 2-3 semaines & 2-3 jours \\
+Maintenance & Infrastructure lourde & Fichier unique \\
+Déploiement & Serveur requis & Fichier .pbix \\
+\hline
+\end{tabular}
+\caption{Comparaison pratique des deux approches}
+\end{table}
+
+\subsection{Leçons Apprises et Recommandations}
+
+\subsubsection{Pour les POC et Démonstrations}
+
+\begin{tcolorbox}[colback=blue!5!white, colframe=blue!75!black, title=�� Power BI Recommandé]
+\begin{itemize}
+    \item \textbf{Vitesse} : Développement 3x plus rapide
+    \item \textbf{Simplicité} : Pas d'infrastructure supplémentaire
+    \item \textbf{Intégration} : ETL + modélisation + visualisation intégrés
+    \item \textbf{Collaboration} : Partage facile avec Power BI Service
+\end{itemize}
+\end{tcolorbox}
+
+\subsubsection{Pour les Environnements de Production}
+
+\begin{tcolorbox}[colback=green!5!white, colframe=green!75!black, title=�� Talend Recommandé]
+\begin{itemize}
+    \item \textbf{Robustesse} : Gestion avancée des erreurs
+    \item \textbf{Monitoring} : Suivi détaillé des exécutions
+    \item \textbf{Scalabilité} : Traitement des gros volumes
+    \item \textbf{Orchestration} : Workflows complexes et planifiés
+\end{itemize}
+\end{tcolorbox}
+
+\subsection{Conclusion de l'Expérience}
+
+Cette expérience pratique démontre que le choix entre Talend et Power BI dépend du contexte :
+
+\begin{itemize}
+    \item \textbf{Power BI} excelle pour la rapidité, la simplicité et l'intégration BI complète
+    \item \textbf{Talend} est supérieur pour la robustesse, le monitoring et les environnements de production
+    
+    \item Pour le projet Northwind (1,456 lignes), Power BI était suffisant et plus rapide
+    \item Pour des volumes plus importants ou des besoins de production, Talend serait nécessaire
+\end{itemize}
+
+\begin{tcolorbox}[colback=yellow!5!white, colframe=yellow!75!black, title=⚠️ Recommandation Finale]
+\textbf{Utilisez Power BI pour} : POC, analyses ad-hoc, petites volumétries, équipes métier\\
+\textbf{Utilisez Talend pour} : Pipelines de production, gros volumes, environnements réglementés, équipes techniques
+\end{tcolorbox}
+
 \section{Visualisation avec Python dans Power BI}
 
 \subsection{Configuration de Python pour Power BI}
@@ -530,7 +804,7 @@ if(input_row.ShippedDate != null) {
     \item \textbf{Installer Python} : Téléchargez Python 3.8+ depuis \url{https://python.org}
     \item \textbf{Installer les packages} :
     \begin{lstlisting}[language=bash]
-pip install pandas matplotlib
+pip install pandas matplotlib numpy seaborn
     \end{lstlisting}
     \item \textbf{Configurer Power BI} :
     \begin{itemize}
@@ -540,7 +814,6 @@ pip install pandas matplotlib
     \end{itemize}
 \end{enumerate}
 
-
 \subsubsection{Création d'un Visuel Python}
 \begin{enumerate}[label=\arabic*.]
     \item \textbf{Sélectionner le visuel Python} :
@@ -548,17 +821,27 @@ pip install pandas matplotlib
         \item Dans le volet Visualisations, cliquez sur l'icône \textbf{Python}
         \item Une zone de script vide apparaît sur la page
     \end{itemize}
-    
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.25\linewidth]{visuel python.png}
+        \caption{Selection de l'icone PY}
+        \label{fig:placeholder}
+    \end{figure}
     \item \textbf{Glisser les champs nécessaires} :
     \begin{itemize}
-        \item Depuis le volet Champs, glissez-déposez les colonnes dans le visuel Python
+        \item Depuis le volet Données, glissez-déposez les colonnes dans la partie Valeurs
         \item Exemple pour notre projet Northwind :
         \begin{itemize}
-            
             \item Depuis \texttt{TF\_Commande} : \texttt{nbr\_commande\_livrees}
             \item Depuis \texttt{Dim\_Employee} : \texttt{TerritoryDescri}
         \end{itemize}
     \end{itemize}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.3\linewidth]{Importation des colonnes.png}
+        \caption{Glissement des champs nécessaires}
+        \label{fig:placeholder}
+    \end{figure}
     
     \item \textbf{Écrire le script Python} :
     \begin{itemize}
@@ -570,76 +853,317 @@ pip install pandas matplotlib
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{script_python.png}
-    \caption{Interface du visuel Python dans Power BI
-}
-    \label{fig:placeholder}
+    \caption{Interface du visuel Python dans Power BI}
+    \label{fig:python-visual-interface}
 \end{figure}
-\subsubsection{Exemple Complet : Analyse des Commandes livrées par territoire }
-\subsection{Exemple 2 : Top 5 des Territoires par Performance}
 
-\subsubsection{Préparation des Données}
-\begin{enumerate}[label=\arabic*.]
-    \item \textbf{Sélectionner le visuel Python} dans le volet Visualisations
-    \item \textbf{Glisser les champs nécessaires} :
-    \begin{itemize}
-        \item Depuis \texttt{Dim\_Employee} : \texttt{TerritoryDescri}
-        \item Depuis \texttt{TF\_Commande} : \texttt{nbr\_commande\_livrees}
-    \end{itemize}
-    \item \textbf{Power BI crée automatiquement} le DataFrame \texttt{dataset}
-\end{enumerate}
+\subsection{Les 6 Graphiques Python Implémentés}
 
-\subsubsection{Script Python pour l'Analyse Territoriale}
-\begin{lstlisting}
+\subsubsection{Graphique 1 : Volume des Commandes par Mois}
+
+\begin{lstlisting}[language=Python, caption=Volume des commandes livrées et non livrées par mois]
 import pandas as pd
 import matplotlib.pyplot as plt
 
-df = dataset.groupby('TerritoryDescri')['nbr_commande_livrees'] \
-            .sum() \
-            .nlargest(5)
+# Vérification des colonnes
+colonnes_requises = ['id_temps', 'nbr_commande_livrees', 'nbr_commande_non_livrees', 'mois_annee']
+colonnes_manquantes = [col for col in colonnes_requises if col not in dataset.columns]
 
-plt.figure(figsize=(8,6))
-df.sort_values().plot(kind='barh', color='purple')
-plt.title("Top 5 Territoires par commandes livrees")
-plt.xlabel("Nombre de commandes")
+if colonnes_manquantes:
+    fig, ax = plt.subplots(figsize=(10, 2))
+    ax.text(0.5, 0.5, f"Glissez ces colonnes:\n{', '.join(colonnes_manquantes)}",
+            ha='center', va='center', fontsize=12, color='red',
+            bbox=dict(boxstyle="round,pad=0.5", facecolor="yellow", alpha=0.7))
+    ax.axis('off')
+    plt.show()
+
+else:
+    # Agrégation par mois
+    commandes_par_mois = dataset.groupby('mois_annee').agg({
+        'nbr_commande_livrees': 'sum',
+        'nbr_commande_non_livrees': 'sum'
+    }).reset_index()
+
+    commandes_par_mois['total_commandes'] = (
+        commandes_par_mois['nbr_commande_livrees'] +
+        commandes_par_mois['nbr_commande_non_livrees']
+    )
+
+    # Trier par date
+    try:
+        commandes_par_mois['date_sort'] = pd.to_datetime(
+            commandes_par_mois['mois_annee'] + '/01',
+            format='%m/%Y/%d'
+        )
+        commandes_par_mois = commandes_par_mois.sort_values('date_sort')
+    except:
+        commandes_par_mois = commandes_par_mois.sort_values('mois_annee')
+
+    # Création du graphique
+    fig, ax = plt.subplots(figsize=(14, 7))
+
+    x = range(len(commandes_par_mois))
+    mois_labels = commandes_par_mois['mois_annee'].tolist()
+
+    # Barres empilées
+    ax.bar(x, commandes_par_mois['nbr_commande_livrees'],
+           label='Commandes Livrées', color='green', alpha=0.7)
+    ax.bar(x, commandes_par_mois['nbr_commande_non_livrees'],
+           bottom=commandes_par_mois['nbr_commande_livrees'],
+           label='Commandes Non Livrées', color='red', alpha=0.7)
+
+    ax.set_xlabel('Mois', fontsize=12)
+    ax.set_ylabel('Nombre de Commandes', fontsize=12)
+    ax.set_title(' VOLUME DES COMMANDES PAR MOIS', fontsize=14, fontweight='bold')
+    ax.set_xticks(x)
+    ax.set_xticklabels(mois_labels, rotation=45, ha='right')
+    ax.legend()
+    ax.grid(True, alpha=0.3)
+
+    # Ajouter les totaux au-dessus des barres
+    for i, total in enumerate(commandes_par_mois['total_commandes']):
+        ax.text(i, total + (total*0.01), f'{total:,}',
+                ha='center', va='bottom', fontsize=9)
+
+    # Statistiques
+    total_periode = commandes_par_mois['total_commandes'].sum()
+    stats_text = f"Total période: {total_periode:,} commandes"
+
+    plt.figtext(0.02, 0.02, stats_text, fontsize=10,
+                bbox=dict(boxstyle="round,pad=0.5", facecolor="lightgray", alpha=0.8))
+
+    plt.tight_layout()
+    plt.show()
+\end{lstlisting}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{figure1.png}
+    \caption{Volume des commandes livrées et non livrées par mois}
+    \label{fig:graph1}
+\end{figure}
+
+\subsubsection{Graphique 2 : Top 10 Clients par Commandes Livrées}
+
+\begin{lstlisting}[language=Python, caption=Top 10 clients par nombre de commandes livrées]
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Grouper par client et sommer les commandes livrées
+df = dataset.groupby('CompanyName')['nbr_commande_livrees'].sum().nlargest(10)
+
+plt.figure(figsize=(10, 6))
+df.sort_values().plot(kind='barh', color='skyblue')
+plt.title("Top 10 Clients par commandes livrées", fontsize=14, fontweight='bold')
+plt.xlabel("Nombre de commandes livrées", fontsize=12)
+plt.grid(axis='x', alpha=0.3)
+
+# Ajouter les valeurs sur les barres
+for i, v in enumerate(df.sort_values()):
+    plt.text(v + (v*0.01), i, f'{v:,}', va='center', fontsize=10)
+
 plt.tight_layout()
 plt.show()
 \end{lstlisting}
 
-\subsubsection{Résultat Attendue}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.75\linewidth]{graphe.png}
-    \caption{Visualisation du top 5 des territoires générée par Python}
-    \label{fig:placeholder}
+    \includegraphics[width=1\linewidth]{figure2.png}
+    \caption{Top 10 clients par nombre de commandes livrées}
+    \label{fig:graph2}
 \end{figure}
 
-\subsubsection{Explications du Code}
+\subsubsection{Graphique 3 : Top 5 Territoires par Commandes Livrées}
+
+\begin{lstlisting}[language=Python, caption=Top 5 territoires par performance]
+import pandas as pd
+import matplotlib.pyplot as plt
+
+df = dataset.groupby('TerritoryDescri')['nbr_commande_livrees'].sum().nlargest(5)
+
+plt.figure(figsize=(10, 6))
+df.sort_values().plot(kind='barh', color='purple')
+plt.title("Top 5 Territoires par commandes livrées", fontsize=14, fontweight='bold')
+plt.xlabel("Nombre de commandes", fontsize=12)
+plt.grid(axis='x', alpha=0.3)
+
+# Ajouter les valeurs sur les barres
+for i, v in enumerate(df.sort_values()):
+    plt.text(v + (v*0.01), i, f'{v:,}', va='center', fontsize=10, color='white')
+
+plt.tight_layout()
+plt.show()
+\end{lstlisting}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{figure3.png}
+    \caption{Top 5 territoires par nombre de commandes livrées}
+    \label{fig:graph3}
+\end{figure}
+
+\subsubsection{Graphique 4 : Heatmap Clients vs Employés}
+
+\begin{lstlisting}[language=Python, caption=Heatmap des commandes livrées par client et employé]
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Créer nom complet de l'employé
+dataset['Employe'] = dataset['Nom'] + " " + dataset['Prenom']
+
+# Calcul total commandes par client
+total_client = dataset.groupby('CompanyName')['nbr_commande_livrees'].sum()
+
+# Top 20 clients
+top_clients = total_client.nlargest(20).index
+df_top = dataset[dataset['CompanyName'].isin(top_clients)]
+
+# Pivot table : clients en lignes, employés en colonnes
+df_pivot = df_top.pivot_table(index='CompanyName', columns='Employe', 
+                              values='nbr_commande_livrees', aggfunc='sum', fill_value=0)
+
+plt.figure(figsize=(14, 8))
+plt.imshow(df_pivot, cmap='YlGnBu', aspect='auto', interpolation='nearest')
+plt.colorbar(label='Commandes livrées', shrink=0.8)
+plt.xticks(range(len(df_pivot.columns)), df_pivot.columns, rotation=90, fontsize=9)
+plt.yticks(range(len(df_pivot.index)), df_pivot.index, fontsize=9)
+plt.title("Heatmap : Top 20 Clients x Employés", fontsize=14, fontweight='bold')
+
+# Ajouter les valeurs dans les cellules
+for i in range(len(df_pivot.index)):
+    for j in range(len(df_pivot.columns)):
+        value = df_pivot.iloc[i, j]
+        if value > 0:
+            plt.text(j, i, f'{int(value)}', ha='center', va='center', 
+                    color='black' if value < df_pivot.values.max()/2 else 'white',
+                    fontsize=8)
+
+plt.tight_layout()
+plt.show()
+\end{lstlisting}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{figure4.png}
+    \caption{Heatmap des commandes livrées par client et employé}
+    \label{fig:graph4}
+\end{figure}
+
+\subsubsection{Graphique 5 : Répartition par Région}
+
+\begin{lstlisting}[language=Python, caption=Répartition des commandes livrées par région]
+import pandas as pd
+import matplotlib.pyplot as plt
+
+df = dataset.groupby('Region')['nbr_commande_livrees'].sum()
+
+plt.figure(figsize=(9, 9))
+wedges, texts, autotexts = plt.pie(df.values, labels=df.index, autopct='%1.1f%%', 
+                                   colors=plt.cm.Set3.colors, startangle=90,
+                                   wedgeprops=dict(edgecolor='white', linewidth=2))
+
+# Améliorer l'apparence des pourcentages
+for autotext in autotexts:
+    autotext.set_color('black')
+    autotext.set_fontsize(10)
+    autotext.set_fontweight('bold')
+
+plt.title("Répartition des commandes livrées par région", fontsize=14, fontweight='bold')
+
+# Ajouter une légende
+plt.legend(wedges, df.index, title="Régions", loc="center left", 
+           bbox_to_anchor=(1, 0, 0.5, 1), fontsize=10)
+
+plt.tight_layout()
+plt.show()
+\end{lstlisting}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{figure5.png}
+    \caption{Répartition des commandes livrées par région}
+    \label{fig:graph5}
+\end{figure}
+
+\subsubsection{Graphique 6 : Évolution Mensuelle des Commandes}
+
+\begin{lstlisting}[language=Python, caption=Évolution des commandes livrées et non livrées]
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Calculer le total des commandes par mois
+df = dataset.groupby('mois_annee')[['nbr_commande_livrees','nbr_commande_non_livrees']].sum()
+df = df.sort_index()  # trier par mois
+
+plt.figure(figsize=(12, 7))
+plt.plot(df.index, df['nbr_commande_livrees'], marker='o', linestyle='-', 
+         color='green', label='Livrées', linewidth=2, markersize=8)
+plt.plot(df.index, df['nbr_commande_non_livrees'], marker='s', linestyle='--', 
+         color='red', label='Non-livrées', linewidth=2, markersize=8)
+
+plt.title("Évolution mensuelle des commandes livrées et non-livrées", 
+          fontsize=14, fontweight='bold')
+plt.xlabel("Mois", fontsize=12)
+plt.ylabel("Nombre de commandes", fontsize=12)
+plt.xticks(rotation=45, ha='right')
+plt.legend(fontsize=12)
+plt.grid(True, alpha=0.3)
+
+# Remplir l'aire entre les courbes
+plt.fill_between(df.index, df['nbr_commande_livrees'], alpha=0.2, color='green')
+plt.fill_between(df.index, df['nbr_commande_non_livrees'], alpha=0.2, color='red')
+
+# Ajouter les valeurs sur les points
+for i, (liv, nliv) in enumerate(zip(df['nbr_commande_livrees'], df['nbr_commande_non_livrees'])):
+    plt.text(i, liv + (liv*0.05), f'{liv:,}', ha='center', va='bottom', fontsize=9)
+    plt.text(i, nliv - (nliv*0.05), f'{nliv:,}', ha='center', va='top', fontsize=9)
+
+plt.tight_layout()
+plt.show()
+\end{lstlisting}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{figure6.png}
+    \caption{Évolution mensuelle des commandes livrées et non livrées}
+    \label{fig:graph6}
+\end{figure}
+
+\subsection{Explications des Codes Python}
+
+\subsubsection{Structure Commune des Scripts}
+
+Chaque script Python suit la même structure logique :
+
+\begin{enumerate}[label=\arabic*.]
+    \item \textbf{Importation des bibliothèques} : pandas pour la manipulation des données, matplotlib pour la visualisation
+    \item \textbf{Vérification des données} : Validation des colonnes nécessaires dans le DataFrame
+    \item \textbf{Agrégation des données} : Groupement et calcul des métriques
+    \item \textbf{Création du graphique} : Configuration du type, des couleurs et des labels
+    \item \textbf{Personnalisation} : Ajout de valeurs, de grilles et de légendes
+    \item \textbf{Affichage} : Utilisation de \texttt{plt.show()} pour afficher dans Power BI
+\end{enumerate}
+
+\subsubsection{Techniques Avancées Utilisées}
+
 \begin{table}[H]
 \centering
-\begin{tabular}{|p{0.25\textwidth}|p{0.7\textwidth}|}
+\begin{tabular}{|p{0.3\textwidth}|p{0.7\textwidth}|}
 \hline
-\textbf{Ligne de code} & \textbf{Explication} \\
+\textbf{Technique} & \textbf{Application dans les scripts} \\
 \hline
-\texttt{dataset.groupby()} & Regroupe les données par territoire \\
-\texttt{nlargest(5)} & Sélectionne les 5 territoires avec le plus de commandes \\
-\texttt{kind='barh'} & Crée un diagramme en barres horizontal \\
-\texttt{color='purple'} & Définit la couleur des barres \\
-\texttt{plt.title()} & Ajoute un titre au graphique \\
-\texttt{plt.text()} & Ajoute les valeurs numériques sur les barres \\
-\texttt{plt.grid()} & Ajoute une grille pour meilleure lisibilité \\
-\texttt{plt.tight\_layout()} & Optimise l'espacement des éléments \\
-\texttt{plt.show()} & Affiche le graphique dans Power BI \\
+\textbf{Groupby + Agg} & Agrégation des données par différentes dimensions (mois, client, territoire) \\
+\textbf{Pivot Table} & Création de heatmaps avec des matrices clients × employés \\
+\textbf{Data Validation} & Vérification des colonnes nécessaires avant le traitement \\
+\textbf{Visual Customization} & Personnalisation fine des couleurs, tailles et polices \\
+\textbf{Annotations} & Ajout de valeurs numériques directement sur les graphiques \\
+\textbf{Error Handling} & Gestion des erreurs de format de date avec try-except \\
+\textbf{Color Mapping} & Utilisation de palettes de couleurs professionnelles (Set3, YlGnBu) \\
 \hline
 \end{tabular}
-\caption{Explications détaillées du code Python}
+\caption{Techniques Python avancées utilisées dans les visualisations}
 \end{table}
-\subsubsection{Exécution et Résultats}
-\begin{enumerate}[label=\arabic*.]
-    \item \textbf{Cliquez sur "Exécuter le script"} (icône play)
-    \item \textbf{Attendez le chargement} (première exécution peut prendre quelques secondes)
-    \item \textbf{Visualisez le résultat} : Le graphique apparaît dans le visuel
-    \item \textbf{Interagissez} : Utilisez les filtres Power BI pour mettre à jour dynamiquement le graphique Python
-\end{enumerate}
 
 \subsection{Bonnes Pratiques pour les Visuals Python}
 
@@ -649,294 +1173,53 @@ plt.show()
 \hline
 \textbf{Pratique} & \textbf{Explication} \\
 \hline
-Glisser d'abord les champs & Power BI crée \texttt{dataset} avec seulement ces colonnes \\
-Vérifier les colonnes & Utilisez \texttt{print(dataset.columns)} pour debugger \\
-Gérer les NaN & Utilisez \texttt{dropna()} ou \texttt{fillna()} \\
-Optimiser les performances & Limitez le nombre de lignes avec des filtres \\
-Utiliser des styles & \texttt{plt.style.use('seaborn')} pour de beaux graphiques \\
-Sauvegarder les scripts & Copiez vos scripts dans un fichier .py externe \\
+Vérification des données & Vérifier les colonnes nécessaires avant le traitement \\
+Gestion des erreurs & Utiliser try-except pour les conversions de date \\
+Optimisation des performances & Limiter le nombre de lignes avec des filtres \\
+Personnalisation visuelle & Utiliser des palettes de couleurs professionnelles \\
+Annotations & Ajouter des valeurs pour améliorer la lisibilité \\
+Titres descriptifs & Utiliser des titres clairs et informatifs \\
+Grilles légères & Ajouter des grilles pour faciliter la lecture \\
+Export des scripts & Sauvegarder les scripts dans des fichiers .py externes \\
 \hline
 \end{tabular}
-\caption{Bonnes pratiques pour les visuals Python}
+\caption{Bonnes pratiques pour les visuals Python dans Power BI}
 \end{table}
 
 \subsection{Avantages du Visuel Python}
 
 \begin{itemize}
-    \item \textbf{✅ Intégration native} : Pas besoin d'exporter/importer
-    \item \textbf{✅ Interactivité} : Réagit aux filtres Power BI
-    \item \textbf{✅ Flexibilité} : Toute bibliothèque Python compatible
-    \item \textbf{✅ Mise à jour automatique} : Rafraîchit avec les données
+    \item \textbf{✅ Flexibilité totale} : Accès à toutes les bibliothèques Python (pandas, matplotlib, seaborn)
+    \item \textbf{✅ Personnalisation avancée} : Contrôle complet sur chaque élément du graphique
+    \item \textbf{✅ Interactivité} : Réaction aux filtres Power BI en temps réel
+    \item \textbf{✅ Intégration native} : Pas besoin d'exporter/importer les données
+    \item \textbf{✅ Reproducibilité} : Scripts reproductibles et versionnables
+    \item \textbf{✅ Analyses complexes} : Possibilité d'implémenter des analyses statistiques avancées
 \end{itemize}
 
 \begin{tcolorbox}[colback=yellow!5!white, colframe=yellow!75!black, title=⚠️ Limitations à connaître]
 \begin{itemize}
-    \item Performance : Les scripts longs peuvent ralentir Power BI
-    \item Mémoire : Limité par les ressources de Power BI
-    \item Dépendances : Doivent être installées sur chaque machine
-    \item Version Python : Doit correspondre à celle configurée
+    \item Performance : Les scripts complexes peuvent ralentir Power BI
+    \item Mémoire : Limité par les ressources de Power BI Desktop
+    \item Dépendances : Packages à installer sur chaque machine
+    \item Version Python : Doit correspondre à celle configurée dans Power BI
+    \item Courbe d'apprentissage : Requiert des compétences en Python
+    \item Debugging : Plus difficile que les visuels natifs de Power BI
 \end{itemize}
 \end{tcolorbox}
 
-\section{Alternative : Python Pur sans Power BI}
-
-\subsection{Approche Directe avec Jupyter Notebooks}
-
-\begin{tcolorbox}[colback=green!5!white, colframe=green!75!black, title=�� Alternative Complémentaire]
-Après avoir exploré l'intégration Python-Power BI, il est important de noter qu'on peut également travailler avec Python de manière autonome, sans passer par Power BI, en utilisant directement les tables exportées.
-\end{tcolorbox}
-
-\subsubsection{Principe de l'Approche}
-\begin{itemize}
-    \item \textbf{Export des tables} : Les tables dimensionnelles et de faits créées dans Power BI peuvent être exportées au format CSV
-    \item \textbf{Chargement direct en Python} : Utilisation de pandas pour charger les fichiers CSV
-    \item \textbf{Visualisation autonome} : Création de dashboards complets avec matplotlib/seaborn
-    \item \textbf{Avantage majeur} : Indépendance totale de Power BI
-\end{itemize}
-
-
-\subsubsection{Exemple de Code Python Autonome}
-
-\begin{lstlisting}[language=python]
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-�� DASHBOARD NORTHWIND - ANALYSE COMPLÈTE
-�� 6 Visualisations Python avec les vraies données
-"""
-
-import pandas as pd
-import matplotlib.pyplot as plt
-import numpy as np
-
-# 1. CHARGEMENT DES DONNÉES
-print("�� Chargement des tables Northwind...")
-
-# Chargement direct depuis les CSV exportés
-dim_client = pd.read_csv('data/Dim_Client.csv')
-dim_employee = pd.read_csv('data/Dim_Employee.csv')
-dim_temps = pd.read_csv('data/Dim_Temps.csv')
-tf_commande = pd.read_csv('data/TF_Commande.csv')
-
-# 2. FUSION DES TABLES (similaire au modèle Power BI)
-print("�� Fusion des tables...")
-df = pd.merge(tf_commande, dim_temps, on='id_temps', how='left')
-df = pd.merge(df, dim_employee, on='id_seqEmployee', how='left')
-df = pd.merge(df, dim_client, on='id_seqClient', how='left')
-
-# 3. CRÉATION DES 6 VISUALISATIONS
-print("�� Génération des 6 visualisations...")
-
-# Graphique 1: Volume des commandes par mois
-commandes_par_mois = df.groupby('mois_annee').agg({
-    'nbr_commande_livrees': 'sum',
-    'nbr_commande_non_livrees': 'sum'
-}).reset_index()
-
-plt.figure(figsize=(14, 7))
-# ... code pour le premier graphique ...
-
-# Graphique 2: Top 10 clients
-top_clients = df.groupby('CompanyName')['nbr_commande_livrees'] \
-                .sum().nlargest(10)
-
-plt.figure(figsize=(10, 6))
-top_clients.sort_values().plot(kind='barh', color='skyblue')
-plt.title("Top 10 Clients - Python Pur")
-plt.xlabel("Commandes livrées")
-plt.tight_layout()
-plt.show()
-
-# ... suite des 4 autres visualisations ...
-\end{lstlisting}
-
-\subsubsection{Avantages de l'Approche Python Pure}
-
-\begin{table}[H]
-\centering
-\begin{tabular}{|p{0.4\textwidth}|p{0.55\textwidth}|}
-\hline
-\textbf{Avantage} & \textbf{Description} \\
-\hline
-\textbf{Indépendance} & Pas besoin de licence Power BI \\
-\textbf{Portabilité} & Fonctionne sur tout OS (Windows, Linux, Mac) \\
-\textbf{Reproductibilité} & Scripts versionnables avec Git \\
-\textbf{Automatisation} & Intégration facile dans des pipelines CI/CD \\
-\textbf{Personnalisation} & Contrôle total sur les graphiques \\
-\textbf{Libraries avancées} & Accès à seaborn, plotly, bokeh, etc. \\
-\textbf{Export multiple} & PDF, HTML, PNG, SVG, etc. \\
-\textbf{Cloud ready} & Déploiement sur serveur Python \\
-\hline
-\end{tabular}
-\caption{Avantages de l'approche Python pure}
-\end{table}
-
-\subsubsection{Comparaison des Deux Approches}
-
-\begin{table}[H]
-\centering
-\begin{tabular}{|p{0.3\textwidth}|p{0.32\textwidth}|p{0.32\textwidth}|}
-\hline
-\textbf{Critère} & \textbf{Python dans Power BI} & \textbf{Python Pur (Notebook)} \\
-\hline
-\textbf{Interactivité} & ✅ Excellente (filtres Power BI) & ⚠️ Limitée (sauf avec widgets) \\
-\textbf{Intégration} & ✅ Native avec rapports Power BI & ⚠️ Séparé du dashboard \\
-\textbf{Apprentissage} & ⚠️ Nécessite Power BI & ✅ Seulement Python \\
-\textbf{Portabilité} & ⚠️ Windows seulement & ✅ Multi-plateforme \\
-\textbf{Licence} & ⚠️ Gratuit mais limité & ✅ 100\% gratuit \\
-\textbf{Versionnement} & ⚠️ Complexe (.pbix) & ✅ Facile (.py avec Git) \\
-\textbf{Automatisation} & ⚠️ Limitée & ✅ Excellente (scripts) \\
-\textbf{Cloud} & ✅ Power BI Service & ✅ Tout serveur Python \\
-\hline
-\end{tabular}
-\caption{Comparaison des deux approches Python}
-\end{table}
-
-\subsubsection{Scénarios d'Utilisation Recommandés}
-
-\begin{tcolorbox}[colback=blue!5!white, colframe=blue!75!black, title=�� Quand utiliser quelle approche ?]
-\begin{itemize}
-    \item \textbf{Python dans Power BI} : 
-    \begin{itemize}
-        \item Dashboards interactifs pour les utilisateurs métier
-        \item Intégration avec d'autres visuels Power BI
-        \item Partage via Power BI Service
-        \item Environnements où Power BI est déjà adopté
-    \end{itemize}
-    
-    \item \textbf{Python pur (Notebooks)} :
-    \begin{itemize}
-        \item Analyses reproductibles pour data scientists
-        \item Versionnement avec Git
-        \item Déploiement sur serveurs Linux
-        \item Intégration dans pipelines de données
-        \item Besoin de bibliothèques spécifiques (scikit-learn, etc.)
-    \end{itemize}
-\end{itemize}
-\end{tcolorbox}
-
-\subsubsection{Workflow Hybride Recommandé}
-
-\begin{figure}[H]
-    \centering
-    \begin{tikzpicture}[node distance=1.5cm]
-    
-    % Définir les styles
-    \tikzset{
-        box/.style={
-            draw,
-            rectangle,
-            rounded corners=5pt,
-            align=center,
-            minimum height=1.5cm,
-            minimum width=3cm,
-            line width=1pt
-        },
-        arrow/.style={
-            ->,
-            >=stealth,
-            line width=1.2pt
-        }
-    }
-    
-    % Éléments du workflow
-    \node[box, fill=blue!20] (powerquery) {Power Query\\ETL};
-    \node[box, fill=green!20, right=2.5cm of powerquery] (pbi_model) {Modèle\\Power BI};
-    \node[box, fill=yellow!20, right=2.5cm of pbi_model] (export) {Export\\CSV};
-    
-    \node[box, fill=orange!20, below=2cm of export] (python) {Python\\Notebooks};
-    \node[box, fill=red!20, left=2.5cm of python] (pbi_python) {Python\\dans Power BI};
-    \node[box, fill=purple!20, left=2.5cm of pbi_python] (dashboard) {Dashboard\\Final};
-    
-    % Flèches
-    \draw[arrow, blue!70] (powerquery) -- (pbi_model) node[midway, above] {Création};
-    \draw[arrow, green!70] (pbi_model) -- (export) node[midway, above] {Export};
-    \draw[arrow, orange!70] (export) -- (python) node[midway, right] {Chargement};
-    \draw[arrow, yellow!70] (pbi_model) -- (pbi_python) node[midway, right] {Intégration};
-    \draw[arrow, purple!70] (pbi_python) -- (dashboard);
-    \draw[arrow, purple!70] (python) -- (dashboard);
-    
-    % Légende
-    \node[above=0.5cm of powerquery, font=\bfseries] {Workflow Hybride Recommandé};
-    
-    \end{tikzpicture}
-    \caption{Workflow hybride combinant Power BI et Python pur}
-    \label{fig:workflow-hybride}
-\end{figure}
-
-\subsubsection{Implémentation Concrète du Projet Northwind}
-
-\begin{enumerate}[label=\arabic*.]
-    \item \textbf{Étape 1 - Export depuis Power BI} :
-    \begin{itemize}
-        \item Dans Power BI Desktop, sélectionnez chaque table
-        \item Clic droit → \textbf{Exporter les données} → \textbf{CSV}
-        \item Sauvegardez dans le dossier \texttt{data/}
-    \end{itemize}
-    
-    \item \textbf{Étape 2 - Création du script Python} :
-    \begin{itemize}
-        \item Créez un fichier \texttt{dashboard\_northwind.py}
-        \item ecrire le code python 
-        
-    \end{itemize}
-    
-    \item \textbf{Étape 3 - Exécution} :
-    \begin{lstlisting}[language=bash]
-# Installation des dépendances
-pip install pandas matplotlib numpy seaborn
-
-# Exécution du dashboard
-python dashboard_northwind.py
-
-# Ou en mode Jupyter
-jupyter notebook notebooks/dashboard_northwind.ipynb
-    \end{lstlisting}
-    
-    \item \textbf{Étape 4 - Versionnement} :
-    \begin{lstlisting}[language=bash]
-# Initialisation Git
-git init
-git add .
-git commit -m "Dashboard Northwind en Python pur"
-
-# Push sur GitHub
-git remote add origin https://github.com/votre-compte/northwind-python.git
-git push -u origin main
-    \end{lstlisting}
-\end{enumerate}
-
-\subsubsection{Résultat : un des graphes Python Autonome}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.9\linewidth]{Figure_python.png}
-    \caption{Exemple d'un des graphes générés en Python pur }
-    \label{fig:python-dashboard}
-\end{figure}
-
-\begin{tcolorbox}[colback=yellow!5!white, colframe=yellow!75!black, title=�� Conclusion sur les Deux Approches]
-Pour le projet Northwind, les deux approches sont valables :
-\begin{itemize}
-    \item \textbf{Python dans Power BI} : Parfait pour une démonstration rapide avec interactivité
-    \item \textbf{Python pur} : Idéal pour une solution reproductible, versionnable et déployable
-    
-\end{itemize}
-\textbf{Recommandation} : Commencez avec Power BI pour le prototypage rapide, puis exportez vers Python pour la production et le versionnement.
-\end{tcolorbox}
 
 \newpage
 \subsection{Dashboard Final Northwind}
 
-Notre dashboard final intègre 6 visuals Python , les voici :
+Notre dashboard final intègre 6 visuals Python interconnectés, permettant une analyse complète des données Northwind :
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\linewidth]{Capture d'écran 2025-12-13 111445.png}
-    \caption{Dashboard Northwind avec 6 visuals Python}
-    \label{fig:placeholder}
+    \includegraphics[width=1\linewidth]{dashboard.png}
+    \caption{Dashboard Northwind avec 6 visuals Python intégrés}
+    \label{fig:final-dashboard}
 \end{figure}
-
 
 \section{Résolution des Problèmes Courants}
 
@@ -972,6 +1255,24 @@ Limite de mémoire & Augmentez la mémoire allouée à Power BI \\
 \end{tabular}
 \end{table}
 
+\subsection{Problèmes avec Python}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|p{0.3\textwidth}|p{0.6\textwidth}|}
+\hline
+\textbf{Problème} & \textbf{Solution} \\
+\hline
+Python non détecté & Vérifiez le chemin dans Options → Scripting Python \\
+Packages manquants & Exécutez \texttt{pip install pandas matplotlib} \\
+Erreurs d'import & Redémarrez Power BI après installation des packages \\
+Graphiques vides & Vérifiez que les champs nécessaires sont glissés \\
+Performance lente & Limitez le nombre de lignes avec des filtres \\
+\hline
+\end{tabular}
+\caption{Problèmes courants avec Python dans Power BI}
+\end{table}
+
 \newpage
 \section{Conclusion}
 
@@ -979,15 +1280,31 @@ Ce guide vous a accompagné de l'installation de Power BI Desktop à la créatio
 
 \begin{itemize}
     \item ✅ Installer et configurer Power BI Desktop
-    \item ✅ Comprendre l'architecture d'un entrepôt de données
+    \item ✅ Comprendre l'architecture d'un entrepôt de données en étoile
     \item ✅ Comparer Power BI et Talend pour l'ETL
     \item ✅ Créer un projet structuré Northwind
     \item ✅ Importer et transformer des données multi-sources
     \item ✅ Construire un modèle de données optimisé
     \item ✅ Utiliser Python dans Power BI pour des visualisations avancées
     \item ✅ Développer des dashboards Python autonomes sans Power BI
+    \item ✅ Implémenter les 6 graphiques d'analyse Northwind
     \item ✅ Choisir l'approche adaptée à vos besoins
+    \item ✅ Résoudre les problèmes courants
     \item ✅ Publier et partager vos analyses
 \end{itemize}
+
+\begin{tcolorbox}[colback=green!5!white, colframe=green!75!black, title=�� Compétences Acquises]
+À travers ce projet, vous avez développé des compétences précieuses en :
+\begin{itemize}
+    \item \textbf{ETL} : Transformation de données avec Power Query et Talend
+    \item \textbf{Modélisation} : Conception de modèle en étoile
+    \item \textbf{Visualisation} : Création de dashboards interactifs
+    \item \textbf{Programmation} : Scripting Python avancé
+    \item \textbf{Analyse} : Interprétation de données business
+    \item \textbf{Comparaison} : Évaluation d'outils BI/ETL
+\end{itemize}
+\end{tcolorbox}
+
+\textbf{Perspectives futures} : Cette base solide vous permettra d'aborder des projets plus complexes, d'intégrer des sources de données supplémentaires, et d'explorer des techniques avancées comme le machine learning intégré ou le streaming de données en temps réel.
 
 \end{document}
